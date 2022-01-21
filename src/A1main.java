@@ -110,7 +110,7 @@ public class A1main {
     }
 
     private static void runSearch(String algo, Map map, Coord start, Coord goal) {
-        Search search = new Search(map, start, goal);
+//        Search search = new Search(map, start, goal);
 
         switch(algo) {
             case "BFS": //run BFS

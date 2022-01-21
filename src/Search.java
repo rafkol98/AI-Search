@@ -2,13 +2,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Search {
+public abstract class Search {
 
-    Queue<Node> frontier;
+    private Queue<Node> frontier;
     private int[][] map;
     private Coord start;
     private Coord goal;
-
 
     public Search(Map map, Coord start, Coord goal) {
         this.map = map.getMap();
@@ -17,29 +16,25 @@ public class Search {
         this.frontier = new LinkedList<>();
     }
 
-    // TODO return failure or success.
-    public Node treeSearch() {
-
-        Node initialNode = new Node(null, start);
-
-        // Insert initial node to the frontier.
-        insertInFrontier(initialNode);
-
-        while (!frontier.isEmpty()) {
-            // Remove first node from frontier.
-            Node currentNode = removeFromFrontier();
-
-            if (goalTest(currentNode.getState(), goal)) {
-                return currentNode;
-            } else {
-                insertAll(expand(currentNode));
-            }
-        }
-
-        //TODO CHANGE!
-        return initialNode;
+    public Queue<Node> getFrontier() {
+        return frontier;
     }
-//    public void
+
+    public int[][] getMap() {
+        return map;
+    }
+
+    public Coord getStart() {
+        return start;
+    }
+
+    public Coord getGoal() {
+        return goal;
+    }
+
+    public abstract Node treeSearch();
+
+    public abstract ArrayList<Node> expand(Node node);
 
     public void insertAll(ArrayList<Node> successors) {
         for (Node node : successors) {
@@ -60,20 +55,6 @@ public class Search {
 
     public boolean goalTest(Coord state, Coord goal) {
         return state.equals(goal);
-    }
-
-
-    public ArrayList<Node> expand(Node node) {
-        ArrayList<Coord> nextStates = successor(node.getState());
-
-        ArrayList<Node> successors = new ArrayList<>();
-
-        for (Coord state : nextStates) {
-            Node nd = new Node(node, state);
-            successors.add(nd);
-        }
-
-        return successors;
     }
 
     //
