@@ -38,6 +38,7 @@ public class Node {
     //TODO: cost function.
     // Calculate path cost.
     public int calculatePathCost() {
-        return parent.pathCost + cost(, state);
+//        return parent.pathCost + cost(, state);
+        return 0;
     }
 }

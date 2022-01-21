@@ -172,6 +172,7 @@ public class A1main {
                         }
                     }
                 }
+                //ALTERNATES!
                 right=!right;
             }
             System.out.println(flip(right));
