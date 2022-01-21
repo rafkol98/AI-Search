@@ -2,11 +2,20 @@ import java.util.ArrayList;
 
 public class UninformedSearch extends Search {
 
-
+    /**
+     *
+     * @param map
+     * @param start
+     * @param goal
+     */
     public UninformedSearch(Map map, Coord start, Coord goal) {
         super(map, start, goal);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Node treeSearch() {
         Node initialNode = new Node(null, getStart());
@@ -14,13 +23,11 @@ public class UninformedSearch extends Search {
         // Insert initial node to the frontier.
         insertInFrontier(initialNode);
 
-        ArrayList<Node> explored = new ArrayList<>();
-
         while (!getFrontier().isEmpty()) {
             // Remove first node from frontier.
             Node currentNode = removeFromFrontier();
             // Add current node to explored.
-            explored.add(currentNode);
+            addExplored(currentNode);
 
             if (goalTest(currentNode.getState(), getGoal())) {
                 return currentNode;
@@ -33,6 +40,11 @@ public class UninformedSearch extends Search {
         return initialNode;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     public ArrayList<Node> expand(Node node) {
         ArrayList<Coord> nextStates = successor(node.getState());
@@ -40,8 +52,11 @@ public class UninformedSearch extends Search {
         ArrayList<Node> successors = new ArrayList<>();
 
         for (Coord state : nextStates) {
-            Node nd = new Node(node, state);
-            successors.add(nd);
+            // if state is not contained in a node of explored or frontier.
+            if (!getFrontier().contains(state) && !getExplored().contains(state)) {
+                Node nd = new Node(node, state);
+                successors.add(nd);
+            }
         }
 
         return successors;

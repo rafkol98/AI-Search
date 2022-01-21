@@ -8,6 +8,7 @@ public abstract class Search {
     private int[][] map;
     private Coord start;
     private Coord goal;
+    private ArrayList<Node> explored = new ArrayList<>();
 
     public Search(Map map, Coord start, Coord goal) {
         this.map = map.getMap();
@@ -30,6 +31,14 @@ public abstract class Search {
 
     public Coord getGoal() {
         return goal;
+    }
+
+    public ArrayList<Node> getExplored() {
+        return explored;
+    }
+
+    public void addExplored(Node node) {
+        explored.add(node);
     }
 
     public abstract Node treeSearch();
