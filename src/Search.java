@@ -4,7 +4,7 @@ import java.util.Queue;
 
 public abstract class Search {
 
-    private Queue<Node> frontier;
+    private LinkedList<Node> frontier;
     private int[][] map;
     private Coord start;
     private Coord goal;
@@ -17,7 +17,8 @@ public abstract class Search {
         this.frontier = new LinkedList<>();
     }
 
-    public Queue<Node> getFrontier() {
+
+    public LinkedList<Node> getFrontier() {
         return frontier;
     }
 
@@ -39,24 +40,19 @@ public abstract class Search {
 
     public void addExplored(Node node) {
         explored.add(node);
+        System.out.println("Explored "+node.getState());
     }
 
-    public abstract Node treeSearch();
+    public abstract Node treeSearch(String algo);
 
     public abstract ArrayList<Node> expand(Node node);
 
-    public void insertAll(ArrayList<Node> successors) {
-        for (Node node : successors) {
-            frontier.add(node);
-        }
-    }
+    public abstract void insertAll(ArrayList<Node> successors, String algo);
 
     /**
      * Insert node to frontier.
      */
-    public void insertInFrontier(Node node) {
-        frontier.add(node);
-    }
+    public abstract void insertInFrontier(Node node, String algo);
 
     public Node removeFromFrontier() {
         return frontier.poll();

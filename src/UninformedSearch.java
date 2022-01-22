@@ -17,11 +17,11 @@ public class UninformedSearch extends Search {
      * @return
      */
     @Override
-    public Node treeSearch() {
+    public Node treeSearch(String algo) {
         Node initialNode = new Node(null, getStart());
 
         // Insert initial node to the frontier.
-        insertInFrontier(initialNode);
+        insertInFrontier(initialNode, algo);
 
         while (!getFrontier().isEmpty()) {
             // Remove first node from frontier.
@@ -30,9 +30,10 @@ public class UninformedSearch extends Search {
             addExplored(currentNode);
 
             if (goalTest(currentNode.getState(), getGoal())) {
+                System.out.println("GOAL!");
                 return currentNode;
             } else {
-                insertAll(expand(currentNode));
+                insertAll(expand(currentNode), algo);
             }
         }
 
@@ -58,10 +59,35 @@ public class UninformedSearch extends Search {
                 successors.add(nd);
             }
         }
-
         return successors;
     }
 
+    @Override
+    public void insertAll(ArrayList<Node> successors, String algo) {
+        for (Node node : successors) {
+            switch (algo) {
+                case "BFS":
+                    getFrontier().addFirst(node);
+                    break;
+                case "DFS":
+                    getFrontier().addLast(node);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void insertInFrontier(Node node, String algo) {
+        getFrontier().add(node);
+        switch (algo) {
+            case "BFS":
+                getFrontier().addFirst(node);
+                break;
+            case "DFS":
+                getFrontier().addLast(node);
+                break;
+        }
+    }
 
 }
 

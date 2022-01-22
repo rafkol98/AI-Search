@@ -110,12 +110,12 @@ public class A1main {
     }
 
     private static void runSearch(String algo, Map map, Coord start, Coord goal) {
-//        Search search = new Search(map, start, goal);
+        Search search = new UninformedSearch(map, start, goal);
 
         switch(algo) {
             case "BFS": //run BFS
                 //TODO: run bfs.
-//                search.treeSearch();
+                search.treeSearch("BFS");
                 break;
             case "DFS": //run DFS
                 break;
