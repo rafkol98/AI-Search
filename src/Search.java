@@ -123,8 +123,12 @@ public abstract class Search {
         return upwards;
     }
 
-    // CONDITIONS:
-    // GET MAP -> MAP CONTAINS THE COORDINATES && THEY ARE NOT EQUAL TO 1!
+    /**
+     *
+     * @param state
+     * @param upwardsTriangleDirection
+     * @return
+     */
     public ArrayList<Coord> getMoves(Coord state, boolean upwardsTriangleDirection) {
 
         ArrayList<Coord> successorStates = new ArrayList<>();
@@ -133,18 +137,18 @@ public abstract class Search {
         int row = state.getR();
         int col = state.getC();
 
-        Coord stateLeft = new Coord(row - 1, col);
-        Coord stateRight = new Coord(row + 1, col);
+        Coord stateLeft = new Coord(row, col - 1);
+        Coord stateRight = new Coord(row, col + 1);
         Coord stateVertical;
 
         boolean down;
 
         if (upwardsTriangleDirection) {
-            stateVertical = new Coord(row, col + 1);
-            down = false;
-        } else {
-            stateVertical = new Coord(row, col - 1);
+            stateVertical = new Coord(row + 1, col);
             down = true;
+        } else {
+            stateVertical = new Coord(row - 1, col);
+            down = false;
         }
 
         // Tie breaking.
@@ -168,7 +172,12 @@ public abstract class Search {
         return keepOnlyLegalStates(successorStates);
     }
 
-    // Can I move to that state?? Is it legal?
+
+    /**
+     *
+     * @param states
+     * @return
+     */
     public ArrayList<Coord> keepOnlyLegalStates(ArrayList<Coord> states) {
 
         ArrayList<Coord> legalStates = new ArrayList<>();

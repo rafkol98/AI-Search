@@ -114,7 +114,6 @@ public class A1main {
 
         switch(algo) {
             case "BFS": //run BFS
-                //TODO: run bfs.
                 search.treeSearch("BFS");
                 break;
             case "DFS": //run DFS

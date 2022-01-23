@@ -72,10 +72,12 @@ public class UninformedSearch extends Search {
         for (Node node : successors) {
             switch (algo) {
                 case "BFS":
-                    getFrontier().addFirst(node);
+                    // Add current node last because nodes that were added first have to enter out first.
+                    // First in first out.
+                    getFrontier().addLast(node);
                     break;
                 case "DFS":
-                    getFrontier().addLast(node);
+                    getFrontier().addFirst(node);
                     break;
             }
         }
