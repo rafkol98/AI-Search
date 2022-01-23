@@ -57,23 +57,23 @@ public class A1main {
 
         if(uninformed) {
 
-            //starting point (1,1),
-            //insert node in the frontier, then print the frontier:
-            frontier_string="[(0,0)]";
+//            //starting point (1,1),
+//            //insert node in the frontier, then print the frontier:
+//            frontier_string="[(0,0)]";
+//
+//
+//            System.out.println(frontier_string);
 
-
-            System.out.println(frontier_string);
-
-            //extract (0,0)
-            //insert successors in the frontier (0,1),(1,0) , then print the frontier,  and repeat for all steps until a path is found or not
-            frontier_string="[(0,1),(1,0)]\n"
-                    + "[(1,0),(0,2)]\n"
-                    + "[(0,2),(1,1)]\n"
-                    + "[(1,1),(1,2)]\n"
-                    + "[(1,2),(2,1)]\n"
-                    + "[(2,1)]\n"
-                    + "[(2,2),(2,0)]";
-            System.out.println(frontier_string);
+//            //extract (0,0)
+//            //insert successors in the frontier (0,1),(1,0) , then print the frontier,  and repeat for all steps until a path is found or not
+//            frontier_string="[(0,1),(1,0)]\n"
+//                    + "[(1,0),(0,2)]\n"
+//                    + "[(0,2),(1,1)]\n"
+//                    + "[(1,1),(1,2)]\n"
+//                    + "[(1,2),(2,1)]\n"
+//                    + "[(2,1)]\n"
+//                    + "[(2,2),(2,0)]";
+//            System.out.println(frontier_string);
 
 
         }else {
@@ -118,6 +118,7 @@ public class A1main {
                 search.treeSearch("BFS");
                 break;
             case "DFS": //run DFS
+                search.treeSearch("DFS");
                 break;
             case "BestF": //run BestF
                 break;

@@ -30,7 +30,7 @@ public abstract class Search {
         ArrayList<Coord> frontierStates = new ArrayList<>();
         // Iterate through the nodes of the frontier, add state of all the nodes to
         // the frontierStates ArrayList.
-        for (Node node : getFrontier()) {
+        for (Node node : frontier) {
             frontierStates.add(node.getState());
         }
         return frontierStates;
@@ -44,7 +44,7 @@ public abstract class Search {
         ArrayList<Coord> exploredStates = new ArrayList<>();
         // Iterate through the nodes of the frontier, add state of all the nodes to
         // the frontierStates ArrayList.
-        for (Node node : getExplored()) {
+        for (Node node : explored) {
             exploredStates.add(node.getState());
         }
         return exploredStates;
@@ -69,7 +69,6 @@ public abstract class Search {
 
     public void addExplored(Node node) {
         explored.add(node);
-        System.out.println("Explored "+node.getState());
     }
 
     public abstract Node treeSearch(String algo);
@@ -126,7 +125,7 @@ public abstract class Search {
 
     // CONDITIONS:
     // GET MAP -> MAP CONTAINS THE COORDINATES && THEY ARE NOT EQUAL TO 1!
-    public ArrayList<Coord> getMoves(Coord state, boolean upwards) {
+    public ArrayList<Coord> getMoves(Coord state, boolean upwardsTriangleDirection) {
 
         ArrayList<Coord> successorStates = new ArrayList<>();
 
@@ -138,20 +137,38 @@ public abstract class Search {
         Coord stateRight = new Coord(row + 1, col);
         Coord stateVertical;
 
-        if (upwards) {
+        boolean down;
+
+        if (upwardsTriangleDirection) {
             stateVertical = new Coord(row, col + 1);
+            down = false;
         } else {
             stateVertical = new Coord(row, col - 1);
+            down = true;
         }
 
-        successorStates.add(stateLeft);
+        // Tie breaking.
+        // Add the right position (1st priority).
         successorStates.add(stateRight);
-        successorStates.add(stateVertical);
 
+        // If the vertical state is down, then add it second (2nd priority)
+        if (down) {
+            successorStates.add(stateVertical);
+        }
+
+        // Add the left position (3rd priority)
+        successorStates.add(stateLeft);
+
+        // If the vertical state is upwards, then add it last (4th priority)
+        if (!down) {
+            successorStates.add(stateVertical);
+        }
+
+        // Call the keep only legal states function to only add the legal states out of these in the frontier.
         return keepOnlyLegalStates(successorStates);
     }
 
-    // Can I move to that state??
+    // Can I move to that state?? Is it legal?
     public ArrayList<Coord> keepOnlyLegalStates(ArrayList<Coord> states) {
 
         ArrayList<Coord> legalStates = new ArrayList<>();
@@ -174,6 +191,14 @@ public abstract class Search {
         }
 
         return legalStates;
+    }
+
+    public void printFrontier() {
+        System.out.print("[");
+        for (Node node : frontier) {
+            System.out.print(node.getState());
+        }
+        System.out.print("] \n");
     }
 
 }

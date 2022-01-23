@@ -23,6 +23,9 @@ public class UninformedSearch extends Search {
         // Insert initial node to the frontier.
         insertInFrontier(initialNode, algo);
 
+        //Print initial state.
+        printFrontier();
+
         while (!getFrontier().isEmpty()) {
             // Remove first node from frontier.
             Node currentNode = removeFromFrontier();
@@ -34,6 +37,7 @@ public class UninformedSearch extends Search {
                 return currentNode;
             } else {
                 insertAll(expand(currentNode), algo);
+                printFrontier();
             }
         }
 
@@ -64,7 +68,7 @@ public class UninformedSearch extends Search {
 
     @Override
     public void insertAll(ArrayList<Node> successors, String algo) {
-        System.out.println("Kalethike to insertALL");
+
         for (Node node : successors) {
             switch (algo) {
                 case "BFS":
@@ -79,7 +83,6 @@ public class UninformedSearch extends Search {
 
     @Override
     public void insertInFrontier(Node node, String algo) {
-        getFrontier().add(node);
         switch (algo) {
             case "BFS":
                 getFrontier().addFirst(node);
