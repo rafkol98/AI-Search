@@ -54,7 +54,7 @@ public class UninformedSearch extends Search {
 
         for (Coord state : nextStates) {
             // if state is not contained in a node of explored or frontier.
-            if (!getFrontier().contains(state) && !getExplored().contains(state)) {
+            if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
                 Node nd = new Node(node, state);
                 successors.add(nd);
             }
@@ -64,6 +64,7 @@ public class UninformedSearch extends Search {
 
     @Override
     public void insertAll(ArrayList<Node> successors, String algo) {
+        System.out.println("Kalethike to insertALL");
         for (Node node : successors) {
             switch (algo) {
                 case "BFS":

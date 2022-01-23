@@ -32,7 +32,12 @@ public class Node {
 
     // Depth = number of steps along the path from the initial state.
     public int calculateDepth() {
-        return parent.depth + 1;
+        // Handle the initial case (when parent == null).
+        if(parent == null) {
+            return 1;
+        } else {
+            return parent.depth + 1;
+        }
     }
 
     //TODO: cost function.

@@ -22,6 +22,35 @@ public abstract class Search {
         return frontier;
     }
 
+    /**
+     * Get states of nodes that are included in the frontier.
+     * @return
+     */
+    public ArrayList<Coord> getFrontierStates() {
+        ArrayList<Coord> frontierStates = new ArrayList<>();
+        // Iterate through the nodes of the frontier, add state of all the nodes to
+        // the frontierStates ArrayList.
+        for (Node node : getFrontier()) {
+            frontierStates.add(node.getState());
+        }
+        return frontierStates;
+    }
+
+    /**
+     * Get states of nodes that are included in the explored list.
+     * @return
+     */
+    public ArrayList<Coord> getExploredStates() {
+        ArrayList<Coord> exploredStates = new ArrayList<>();
+        // Iterate through the nodes of the frontier, add state of all the nodes to
+        // the frontierStates ArrayList.
+        for (Node node : getExplored()) {
+            exploredStates.add(node.getState());
+        }
+        return exploredStates;
+    }
+
+
     public int[][] getMap() {
         return map;
     }
