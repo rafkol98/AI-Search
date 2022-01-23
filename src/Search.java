@@ -201,4 +201,17 @@ public abstract class Search {
         System.out.print("] \n");
     }
 
+    public void printGoal() {
+        System.out.print("\n[");
+        //Print nodes explored.
+        for (Node node : explored) {
+            System.out.print(node.getState());
+        }
+        System.out.print("] \n");
+        System.out.println("Path cost!!!!!");
+        System.out.println(getExplored().size());
+    }
+
+
+
 }
