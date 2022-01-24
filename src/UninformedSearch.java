@@ -33,7 +33,7 @@ public class UninformedSearch extends Search {
             addExplored(currentNode);
 
             if (goalTest(currentNode.getState(), getGoal())) {
-                printGoal();
+                printGoal(currentNode);
                 return currentNode;
             } else {
                 insertAll(expand(currentNode), algo);

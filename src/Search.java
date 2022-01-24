@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public abstract class Search {
 
@@ -202,6 +203,9 @@ public abstract class Search {
         return legalStates;
     }
 
+    /**
+     *
+     */
     public void printFrontier() {
         System.out.print("[");
         for (Node node : frontier) {
@@ -210,15 +214,37 @@ public abstract class Search {
         System.out.print("] \n");
     }
 
-    public void printGoal() {
-        System.out.print("\n[");
-        //Print nodes explored.
-        for (Node node : explored) {
-            System.out.print(node.getState());
+    /**
+     * Print final output (when goal node is reached).
+     * @param node
+     */
+    public void printGoal(Node node) {
+        Stack<Coord> pathStates = new Stack<>(); // ArrayList that holds the states in the path.
+
+        Boolean initial = false; // flag that determines if the coord are the initial.
+        Node tempNode = node; // Assign node passed in to the new tempNode variable.
+
+
+        pathStates.push(node.getState()); // Add the goal state (final node) to the stack.
+
+        // Iterate until we reach the starting node.
+        while (!initial) {
+            tempNode = tempNode.getParent();
+            pathStates.push(tempNode.getState());
+
+            // if the parent node's state equals the starting node, then end while loop.
+            if (tempNode.getState().equals(getStart())) {
+                initial = true;
+            }
         }
-        System.out.print("] \n");
-        System.out.println("Path cost!!!!!");
+
+        // Print path, path cost, and number of nodes explored.
+        while (!pathStates.isEmpty()) {
+            System.out.print(pathStates.pop());
+        }
+        System.out.println("\nPath cost!!!!!");
         System.out.println(getExplored().size());
+
     }
 
 
