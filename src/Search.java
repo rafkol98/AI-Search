@@ -11,6 +11,12 @@ public abstract class Search {
     private Coord goal;
     private ArrayList<Node> explored = new ArrayList<>();
 
+    /**
+     *
+     * @param map
+     * @param start
+     * @param goal
+     */
     public Search(Map map, Coord start, Coord goal) {
         this.map = map.getMap();
         this.start = start;
@@ -18,7 +24,10 @@ public abstract class Search {
         this.frontier = new LinkedList<>();
     }
 
-
+    /**
+     *
+     * @return
+     */
     public LinkedList<Node> getFrontier() {
         return frontier;
     }
@@ -51,50 +60,100 @@ public abstract class Search {
         return exploredStates;
     }
 
-
+    /**
+     *
+     * @return
+     */
     public int[][] getMap() {
         return map;
     }
 
+    /**
+     *
+     * @return
+     */
     public Coord getStart() {
         return start;
     }
 
+    /**
+     *
+     * @return
+     */
     public Coord getGoal() {
         return goal;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Node> getExplored() {
         return explored;
     }
 
+    /**
+     *
+     * @param node
+     */
     public void addExplored(Node node) {
         explored.add(node);
     }
 
+    /**
+     *
+     * @param algo
+     * @return
+     */
     public abstract Node treeSearch(String algo);
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     public abstract ArrayList<Node> expand(Node node);
 
+    /**
+     *
+     * @param successors
+     * @param algo
+     */
     public abstract void insertAll(ArrayList<Node> successors, String algo);
 
     /**
-     * Insert node to frontier.
+     * Insert the first node to frontier.
+     * The node is added for all the algorithms in the same order as this method is only used for the first node.
      */
-    public abstract void insertInFrontier(Node node, String algo);
+    public void insert(Node node, String algo) {
+        getFrontier().add(node); // Add node.
+    }
 
+    /**
+     *
+     * @return
+     */
     public Node removeFromFrontier() {
         return frontier.poll();
     }
 
+    /**
+     *
+     * @param state
+     * @param goal
+     * @return
+     */
     public boolean goalTest(Coord state, Coord goal) {
         return state.equals(goal);
     }
 
-    //
+    /**
+     *
+     * @param state
+     * @return
+     */
     public ArrayList<Coord> successor(Coord state) {
-        // Find direction that triangle points.
-        boolean upwards = isTriangleUpwards(state);
+        boolean upwards = isTriangleUpwards(state); // Find if triangle points upwards (direction).
 
         return getMoves(state, upwards);
     }
@@ -108,11 +167,10 @@ public abstract class Search {
      * @return if triangle is upwards or downwards pointing.
      */
     public boolean isTriangleUpwards(Coord state) {
-        // Get row and column of state.
-        int row = state.getR();
-        int col = state.getC();
+        int row = state.getR(); // Get row of state passed in.
+        int col = state.getC(); // Get column of state passed in.
 
-        boolean upwards;
+        boolean upwards; // flag to determine if triangle faces upwards or downwards.
 
         // if row and column have modulo of 0 with 2, then the arrow is upwards facing.
         if ((row % 2 == 0 && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1)) {
@@ -126,55 +184,55 @@ public abstract class Search {
 
     /**
      *
+     *
      * @param state
      * @param upwardsTriangleDirection
      * @return
      */
     public ArrayList<Coord> getMoves(Coord state, boolean upwardsTriangleDirection) {
+        ArrayList<Coord> successorStates = new ArrayList<>(); // Initialise ArrayList to hold all the successor states.
 
-        ArrayList<Coord> successorStates = new ArrayList<>();
+        int row = state.getR(); // Get row of state passed in.
+        int col = state.getC(); // Get column of state passed in.
 
-        // Get row and column of state.
-        int row = state.getR();
-        int col = state.getC();
-
-        Coord stateLeft = new Coord(row, col - 1);
-        Coord stateRight = new Coord(row, col + 1);
+        Coord stateLeft = new Coord(row, col - 1); // Initialise the left state.
+        Coord stateRight = new Coord(row, col + 1); // Initialise the right state.
         Coord stateVertical;
 
         boolean down;
 
         if (upwardsTriangleDirection) {
-            stateVertical = new Coord(row + 1, col);
+            stateVertical = new Coord(row + 1, col); // Assign the downward state in the stateVertical.
             down = true;
         } else {
-            stateVertical = new Coord(row - 1, col);
+            stateVertical = new Coord(row - 1, col); // Assign the upwards state in the stateVertical.
             down = false;
         }
 
         // Tie breaking.
-        // Add the right position (1st priority).
-        successorStates.add(stateRight);
+        successorStates.add(stateRight); // Add the right position (1st priority).
 
         // If the vertical state is down, then add it second (2nd priority)
         if (down) {
             successorStates.add(stateVertical);
         }
 
-        // Add the left position (3rd priority)
-        successorStates.add(stateLeft);
+        successorStates.add(stateLeft);  // Add the left position (3rd priority)
 
         // If the vertical state is upwards, then add it last (4th priority)
         if (!down) {
             successorStates.add(stateVertical);
         }
 
-        // Call the keep only legal states function to only add the legal states out of these in the frontier.
-        return keepOnlyLegalStates(successorStates);
+        return keepOnlyLegalStates(successorStates); // Keep and return only the legal states out of the ones added.
     }
 
 
     /**
+     * This method ensures that only legal states are kept.
+     * It ensures that both row and column are greater or equal than 0 (we cannot have negative coordinates) and less
+     * or equal than the map's row and column boundaries.
+     * It finally checks that the state is not an island i.e. has a value of 1 on the map.
      *
      * @param states
      * @return
@@ -183,20 +241,18 @@ public abstract class Search {
 
         ArrayList<Coord> legalStates = new ArrayList<>();
 
+        // Iterate through the states passed in, keep only the legal states.
         for (Coord state : states) {
-            // Get row and column of state passed in.
-            int row = state.getR();
-            int col = state.getC();
 
-            // TODO: make sure its -1.
+            int row = state.getR(); // Get row of current state.
+            int col = state.getC(); // Get column of current state.
+
             int rows = map.length - 1;
             int columns = map[0].length - 1;
 
-            // Check if row and column are bigger or equal than 0,
-            // if they are less or equal than the rows and columns length.
-            // and if the state is not a 1 (land) on the map.
+            // Check that the current state is legal.
             if ((row >= 0 && col >= 0) && (row <= rows && col <= columns) && (map[row][col] != 1)) {
-                legalStates.add(state);
+                legalStates.add(state); // add state to the legal states ArrayList.
             }
         }
 
@@ -204,10 +260,11 @@ public abstract class Search {
     }
 
     /**
-     *
+     * Print elements that are currently in the frontier.
      */
     public void printFrontier() {
         System.out.print("[");
+
         for (Node node : frontier) {
             System.out.print(node.getState());
         }
@@ -242,11 +299,9 @@ public abstract class Search {
         while (!pathStates.isEmpty()) {
             System.out.print(pathStates.pop());
         }
-        System.out.println("\nPath cost!!!!!");
+        System.out.println("\n Path cost!!!!!");
         System.out.println(getExplored().size());
 
     }
-
-
 
 }

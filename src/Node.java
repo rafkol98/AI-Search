@@ -1,7 +1,6 @@
 public class Node {
 
-    //TODO:
-    // How do I implement the STATE[node] from pseudo code?
+
     private Coord state;
     private Node parent;
     private int depth;

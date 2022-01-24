@@ -21,16 +21,14 @@ public class UninformedSearch extends Search {
         Node initialNode = new Node(null, getStart());
 
         // Insert initial node to the frontier.
-        insertInFrontier(initialNode, algo);
+        insert(initialNode, algo);
 
         //Print initial state.
         printFrontier();
 
         while (!getFrontier().isEmpty()) {
-            // Remove first node from frontier.
-            Node currentNode = removeFromFrontier();
-            // Add current node to explored.
-            addExplored(currentNode);
+            Node currentNode = removeFromFrontier(); // Remove first node from frontier.
+            addExplored(currentNode); // Add current node to explored.
 
             if (goalTest(currentNode.getState(), getGoal())) {
                 printGoal(currentNode);
@@ -66,34 +64,26 @@ public class UninformedSearch extends Search {
         return successors;
     }
 
+    /**
+     * Insert all successor nodes passed to the frontier.
+     * @param successors
+     * @param algo
+     */
     @Override
     public void insertAll(ArrayList<Node> successors, String algo) {
 
         for (Node node : successors) {
             switch (algo) {
                 case "BFS":
-                    // Add current node last because nodes that were added first have to enter out first.
-                    // First in first out.
-                    getFrontier().addLast(node);
+                    getFrontier().addLast(node);  // Add current node last - first in, first out.
                     break;
                 case "DFS":
-                    getFrontier().addFirst(node);
+                    getFrontier().addFirst(node); // Add current node first - first in, last out.
                     break;
             }
         }
     }
 
-    @Override
-    public void insertInFrontier(Node node, String algo) {
-        switch (algo) {
-            case "BFS":
-                getFrontier().addFirst(node);
-                break;
-            case "DFS":
-                getFrontier().addLast(node);
-                break;
-        }
-    }
 
 }
 
