@@ -105,7 +105,7 @@ public abstract class Search {
      * @param algo
      * @return
      */
-    public abstract Node treeSearch(String algo);
+    public abstract void treeSearch(String algo);
 
     /**
      *
@@ -276,32 +276,23 @@ public abstract class Search {
      * @param node
      */
     public void printGoal(Node node) {
-        Stack<Coord> pathStates = new Stack<>(); // ArrayList that holds the states in the path.
-
-        Boolean initial = false; // flag that determines if the coord are the initial.
-        Node tempNode = node; // Assign node passed in to the new tempNode variable.
-
-
-        pathStates.push(node.getState()); // Add the goal state (final node) to the stack.
-
-        // Iterate until we reach the starting node.
-        while (!initial) {
-            tempNode = tempNode.getParent();
-            pathStates.push(tempNode.getState());
-
-            // if the parent node's state equals the starting node, then end while loop.
-            if (tempNode.getState().equals(getStart())) {
-                initial = true;
-            }
-        }
+        Stack<Coord> pathStates = node.getPath(getStart());
+        int pathCost = pathStates.size();
 
         // Print path, path cost, and number of nodes explored.
         while (!pathStates.isEmpty()) {
             System.out.print(pathStates.pop());
         }
-        System.out.println("\n Path cost!!!!!");
-        System.out.println(getExplored().size());
 
+        System.out.println("\n"+pathCost); // Print path cost.
+        System.out.println(getExplored().size()); // Print nodes explored.
+
+        System.exit(0); // Exit system.
+    }
+
+    public void failure() {
+        System.out.println("Failure to find path");
+        System.exit(0); // Exit system.
     }
 
 }

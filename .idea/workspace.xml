@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24f13d8a-c628-4bfa-81d3-a6ce751adf3a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/InformedSearch.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/InformedSearch.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/A1main.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/A1main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/A1main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/A1main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Search.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.java" afterDir="false" />
@@ -34,11 +37,15 @@
     </file-type-list>
   </component>
   <component name="ProjectId" id="23yUigZF7NrF9q2MOFgW8kni2ny" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -54,5 +61,8 @@
       <updated>1642705949038</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

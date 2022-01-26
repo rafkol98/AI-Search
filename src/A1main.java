@@ -42,69 +42,6 @@ public class A1main {
         //run your search algorithm
         runSearch(args[0],conf.getMap(),conf.getS(),conf.getG());
 
-        /*
-         * The system must print the following information from your search methods
-         * All code below is for demonstration purposes, and can be removed
-         */
-
-
-        /*
-         * 1) Print the Frontier at each step before polling
-         */
-
-        boolean uninformed=true;
-        String frontier_string="";
-
-        if(uninformed) {
-
-//            //starting point (1,1),
-//            //insert node in the frontier, then print the frontier:
-//            frontier_string="[(0,0)]";
-//
-//
-//            System.out.println(frontier_string);
-
-//            //extract (0,0)
-//            //insert successors in the frontier (0,1),(1,0) , then print the frontier,  and repeat for all steps until a path is found or not
-//            frontier_string="[(0,1),(1,0)]\n"
-//                    + "[(1,0),(0,2)]\n"
-//                    + "[(0,2),(1,1)]\n"
-//                    + "[(1,1),(1,2)]\n"
-//                    + "[(1,2),(2,1)]\n"
-//                    + "[(2,1)]\n"
-//                    + "[(2,2),(2,0)]";
-//            System.out.println(frontier_string);
-
-
-        }else {
-            //for informed searches the nodes in the frontier must also include the f-cost
-            //for example
-            frontier_string="[(0,0):4.0]\n"
-                    + "[(0,1):3.0,(1,0):3.0]\n"
-                    + "...";
-            System.out.println(frontier_string);
-
-        }
-
-        /*
-         * 2) The final three lines must be the path, path cost, and number of nodes visited/explored, in this order
-         */
-
-        boolean path_found=true;
-        String path_string="(0,0)(1,0)(1,1)(2,1)(2,2)";
-        double path_cost=4;
-        int n_explored=8;
-
-        if(path_found) {
-            System.out.println(path_string);
-            System.out.println(path_cost);
-        }else {
-            System.out.println("fail");
-        }
-
-        System.out.println(n_explored);
-
-
         printMap(conf.getMap(), conf.getS(), conf.getG());
 
     }
