@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public abstract class Search {
 
-    private LinkedList<Node> frontier;
     private int[][] map;
     private Coord start;
     private Coord goal;
@@ -22,44 +21,13 @@ public abstract class Search {
         this.map = map.getMap();
         this.start = start;
         this.goal = goal;
-        this.frontier = new LinkedList<>();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public LinkedList<Node> getFrontier() {
-        return frontier;
     }
 
     /**
      * Get states of nodes that are included in the frontier.
      * @return
      */
-    public ArrayList<Coord> getFrontierStates() {
-        ArrayList<Coord> frontierStates = new ArrayList<>();
-        // Iterate through the nodes of the frontier, add state of all the nodes to
-        // the frontierStates ArrayList.
-        for (Node node : frontier) {
-            frontierStates.add(node.getState());
-        }
-        return frontierStates;
-    }
-
-    /**
-     * Get states of nodes that are included in the explored list.
-     * @return
-     */
-    public ArrayList<Coord> getExploredStates() {
-        ArrayList<Coord> exploredStates = new ArrayList<>();
-        // Iterate through the nodes of the frontier, add state of all the nodes to
-        // the frontierStates ArrayList.
-        for (Node node : explored) {
-            exploredStates.add(node.getState());
-        }
-        return exploredStates;
-    }
+    public abstract ArrayList<Coord> getFrontierStates();
 
     /**
      *
@@ -85,6 +53,7 @@ public abstract class Search {
         return goal;
     }
 
+
     /**
      *
      * @return
@@ -102,11 +71,27 @@ public abstract class Search {
     }
 
     /**
+     * Print elements that are currently in the frontier.
+     */
+    public abstract void printFrontier();
+
+    /**
      *
      * @param algo
      * @return
      */
-    public abstract void treeSearch(String algo);
+    public void treeSearch(String algo) {
+        Node initialNode = new Node(null, getStart()); // Create initial node.
+
+        insert(initialNode); // Insert initial node to the frontier.
+
+        loopFrontier(algo);
+
+        failure(); // if path was not found -> print failure.
+
+    }
+
+    public abstract void loopFrontier(String algo);
 
     /**
      *
@@ -126,16 +111,26 @@ public abstract class Search {
      * Insert the first node to frontier.
      * The node is added for all the algorithms in the same order as this method is only used for the first node.
      */
-    public void insert(Node node, String algo) {
-        getFrontier().add(node); // Add node.
-    }
+    public abstract void insert(Node node);
 
     /**
      *
      * @return
      */
-    public Node removeFromFrontier() {
-        return frontier.poll();
+    public abstract Node removeFromFrontier();
+
+    /**
+     * Get states of nodes that are included in the explored list.
+     * @return
+     */
+    public ArrayList<Coord> getExploredStates() {
+        ArrayList<Coord> exploredStates = new ArrayList<>();
+        // Iterate through the nodes of the frontier, add state of all the nodes to
+        // the frontierStates ArrayList.
+        for (Node node : explored) {
+            exploredStates.add(node.getState());
+        }
+        return exploredStates;
     }
 
     /**
@@ -261,32 +256,17 @@ public abstract class Search {
     }
 
     /**
-     * Print elements that are currently in the frontier.
-     */
-    public void printFrontier() {
-        System.out.print("[");
-
-        System.out.print(frontier.stream().map(n->n.getState().toString()).collect(Collectors.joining(",")));
-//        for (Node node : frontier) {
-//            System.out.print(node.getState());
-//        }
-        System.out.print("] \n");
-    }
-
-    /**
      * Print final output (when goal node is reached).
      * @param node
      */
     public void printGoal(Node node) {
         Stack<Coord> pathStates = node.getPath(getStart());
-        float pathCost = pathStates.size() - 1;
 
         // Print path, path cost, and number of nodes explored.
         while (!pathStates.isEmpty()) {
             System.out.print(pathStates.pop());
         }
-
-        System.out.println("\n"+pathCost); // Print path cost.
+        System.out.println("\n"+node.getPathCost(getStart())); // Print path cost.
         System.out.println(getExplored().size()); // Print nodes explored.
 
         System.exit(0); // Exit system.

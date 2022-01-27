@@ -1,6 +1,10 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class UninformedSearch extends Search {
+
+    private LinkedList<Node> frontier;
 
     /**
      * Create an uninformed search instance.
@@ -10,20 +14,14 @@ public class UninformedSearch extends Search {
      */
     public UninformedSearch(Map map, Coord start, Coord goal) {
         super(map, start, goal);
+        this.frontier = new LinkedList<>();
     }
 
-    /**
-     * The function used to search for a solution in a tree.
-     * @return
-     */
+
     @Override
-    public void treeSearch(String algo) {
-        Node initialNode = new Node(null, getStart()); // Create initial node.
-
-        insert(initialNode, algo); // Insert initial node to the frontier.
-
+    public void loopFrontier(String algo) {
         // While the frontier is not empty, loop through it.
-        while (!getFrontier().isEmpty()) {
+        while (!frontier.isEmpty()) {
             printFrontier(); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
@@ -35,8 +33,6 @@ public class UninformedSearch extends Search {
                 insertAll(expand(currentNode), algo); // insert to the frontier all nodes returned from the expand function.
             }
         }
-
-        failure(); // if path was not found -> print failure.
 
     }
 
@@ -62,6 +58,10 @@ public class UninformedSearch extends Search {
         return successors;
     }
 
+    public void insert(Node node) {
+        frontier.add(node); // Add node.
+    }
+
     /**
      * Insert all successor nodes passed to the frontier.
      * @param successors
@@ -73,15 +73,38 @@ public class UninformedSearch extends Search {
         for (Node node : successors) {
             switch (algo) {
                 case "BFS":
-                    getFrontier().addLast(node);  // Add current node last - first in, first out.
+                    frontier.addLast(node);  // Add current node last - first in, first out.
                     break;
                 case "DFS":
-                    getFrontier().addFirst(node); // Add current node first - first in, last out.
+                    frontier.addFirst(node); // Add current node first - first in, last out.
                     break;
             }
         }
     }
 
+    /**
+     * Iterate through the nodes of the frontier, add state of all the nodes to the frontierStates ArrayList.
+     * @return
+     */
+    public ArrayList<Coord> getFrontierStates() {
+        ArrayList<Coord> frontierStates = new ArrayList<>();
+
+        for (Node node : frontier) {
+            frontierStates.add(node.getState());
+        }
+        return frontierStates;
+    }
+
+    public Node removeFromFrontier() {
+        return frontier.poll();
+    }
+
+    /**
+     * Print elements that are currently in the frontier.
+     */
+    public void printFrontier() {
+        System.out.println("["+frontier.stream().map(n->n.getState().toString()).collect(Collectors.joining(","))+"]");
+    }
 
 }
 

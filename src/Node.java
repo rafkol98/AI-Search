@@ -6,42 +6,120 @@ public class Node {
     private Coord state;
     private Node parent;
     private int depth;
-    private int pathCost;
+    private Coord goal;
+    private double h_Cost;
+    private double f_Cost;
 
+    /**
+     *
+     * @param parent
+     * @param state
+     */
     public Node (Node parent, Coord state) {
         this.state = state;
         this.parent = parent;
         this.depth = calculateDepth();
-        this.pathCost = calculatePathCost();
     }
 
+    /**
+     *
+     * @param state
+     * @param parent
+     * @param depth
+     * @param goal
+     */
+    public Node (Coord state, Node parent, int depth, Coord goal, char heuristic, String algo, Coord start) {
+        this.state = state;
+        this.parent = parent;
+        this.depth = depth;
+        this.goal = goal;
+        this.h_Cost = heuristicScore(heuristic);
+        this.f_Cost = calculateFCost(algo, start);
+    }
+
+    /**
+     *
+     * @return
+     */
     public Coord getState() {
         return state;
     }
 
+    /**
+     *
+     * @return
+     */
     public Node getParent() {
         return parent;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDepth() {
         return depth;
     }
 
-    public int getPathCost() {
-
-        return pathCost;
+    /**
+     *
+     * @param start
+     * @return
+     */
+    public float getPathCost(Coord start) {
+        return  getPath(start).size() - 1; // -1 is to remove the initial node from the cost.
     }
 
-    // Depth = number of steps along the path from the initial state.
-    public int calculateDepth() {
+    /**
+     *
+     * @return
+     */
+    public double getH_Cost() {
+        return h_Cost;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getF_Cost() {
+        return f_Cost;
+    }
+
+    /**
+     *
+     * @return
+     */
+    private int calculateDepth() {
         // Handle the initial case (when parent == null).
         if(parent == null) {
             return 1;
-        } else {
+        }
+        // Return number of steps along the path from the initial state.
+        else {
             return parent.depth + 1;
         }
     }
 
+    /**
+     * Calculate f_cost depending on the algorithm used.
+     * @return
+     */
+    private double calculateFCost(String algo, Coord start) {
+        switch (algo) {
+            case "BestF":
+                return getH_Cost();
+            case "AStar":
+                return getH_Cost() + getPathCost(start);
+        }
+            return 0;
+    }
+
+    /**
+     * Get path from a start node to the current one.
+     * @param start
+     * @return
+     */
     public Stack<Coord> getPath(Coord start) {
         Stack<Coord> pathStates = new Stack<>(); // ArrayList that holds the states in the path.
 
@@ -65,25 +143,25 @@ public class Node {
         return pathStates;
     }
 
-    //TODO: cost function.
-    // Calculate path cost.
-    public int calculatePathCost() {
-//        return parent.pathCost + cost(, state);
-        return 0;
-    }
-
     /**
      * Calculate manhattan distance from the two cartesian coordinates passed in.
-     * @param g goal coordinate.
      * @return manhattan distance.
      */
-    public int getScore(Coord g, String heuristic) {
-        switch (heuristic) {
-            case "M":
-                int deltaX = getState().getC() - g.getC();
-                int deltaY = getState().getR() - g.getR();
+    private double heuristicScore(char heuristic) {
+        int deltaX = getState().getC() - goal.getC();
+        int deltaY = getState().getR() - goal.getR();
 
+        switch (heuristic) {
+            // Manhattan distance.
+            case 'M':
                 return Math.abs(deltaX) +  Math.abs(deltaY); // return manhattan distance.
+            // Euclidian distance.
+            case 'E':
+                return Math.sqrt(Math.pow(deltaX,2) +  Math.pow(deltaY,2)); // return manhattan distance.
+            // Chebyshev distance.
+            case 'C':
+                return Math.max(Math.abs(deltaX), Math.abs(deltaY)); // return manhattan distance.
+
         }
        return 0;
     }

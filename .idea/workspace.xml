@@ -2,52 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24f13d8a-c628-4bfa-81d3-a6ce751adf3a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Tests/._.DS_Store" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._BFSJConf01" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._BFSJConf02" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._BFSJConf03" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._BFSJConf04" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._BFSJConf05" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._build-all.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/._practical.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/._BFSJConf01.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/._BFSJConf01.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/._prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/BFSJConf01.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/BFSJConf01.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf01/prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/._BFSJConf02.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/._BFSJConf02.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/._prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/BFSJConf02.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/BFSJConf02.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf02/prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/._BFSJConf03.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/._BFSJConf03.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/._prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/BFSJConf03.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/BFSJConf03.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf03/prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/._BFSJConf04.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/._BFSJConf04.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/._prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/BFSJConf04.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/BFSJConf04.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf04/prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/._BFSJConf05.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/._BFSJConf05.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/._prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/BFSJConf05.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/BFSJConf05.out" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/BFSJConf05/prog-run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/build-all.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tests/practical.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Frontier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/InformedSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/InformedSearch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/InformedSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InformedSearch.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Search.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UninformedSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/UninformedSearch.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/UninformedSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UninformedSearch.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
