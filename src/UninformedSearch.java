@@ -19,7 +19,7 @@ public class UninformedSearch extends Search {
 
 
     @Override
-    public void loopFrontier(String algo) {
+    public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(); // print frontier.
@@ -30,7 +30,7 @@ public class UninformedSearch extends Search {
             if (goalTest(currentNode.getState(), getGoal())) {
                 printGoal(currentNode); // print the final goal output.
             } else {
-                insertAll(expand(currentNode), algo); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode)); // insert to the frontier all nodes returned from the expand function.
             }
         }
 
@@ -65,13 +65,12 @@ public class UninformedSearch extends Search {
     /**
      * Insert all successor nodes passed to the frontier.
      * @param successors
-     * @param algo
      */
     @Override
-    public void insertAll(ArrayList<Node> successors, String algo) {
+    public void insertAll(ArrayList<Node> successors) {
 
         for (Node node : successors) {
-            switch (algo) {
+            switch (getAlgo()) {
                 case "BFS":
                     frontier.addLast(node);  // Add current node last - first in, first out.
                     break;

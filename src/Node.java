@@ -25,13 +25,12 @@ public class Node {
      *
      * @param state
      * @param parent
-     * @param depth
      * @param goal
      */
-    public Node (Coord state, Node parent, int depth, Coord goal, char heuristic, String algo, Coord start) {
+    public Node (Node parent, Coord state, Coord goal, char heuristic, String algo, Coord start) {
         this.state = state;
         this.parent = parent;
-        this.depth = depth;
+        this.depth = calculateDepth();
         this.goal = goal;
         this.h_Cost = heuristicScore(heuristic);
         this.f_Cost = calculateFCost(algo, start);

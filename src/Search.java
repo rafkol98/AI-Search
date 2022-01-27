@@ -10,6 +10,7 @@ public abstract class Search {
     private Coord start;
     private Coord goal;
     private ArrayList<Node> explored = new ArrayList<>();
+    private String algo;
 
     /**
      *
@@ -21,6 +22,14 @@ public abstract class Search {
         this.map = map.getMap();
         this.start = start;
         this.goal = goal;
+    }
+
+    public String getAlgo() {
+        return algo;
+    }
+
+    public void setAlgo(String algo) {
+        this.algo = algo;
     }
 
     /**
@@ -81,17 +90,19 @@ public abstract class Search {
      * @return
      */
     public void treeSearch(String algo) {
+        setAlgo(algo);
+
         Node initialNode = new Node(null, getStart()); // Create initial node.
 
         insert(initialNode); // Insert initial node to the frontier.
 
-        loopFrontier(algo);
+        loopFrontier();
 
         failure(); // if path was not found -> print failure.
 
     }
 
-    public abstract void loopFrontier(String algo);
+    public abstract void loopFrontier();
 
     /**
      *
@@ -103,9 +114,8 @@ public abstract class Search {
     /**
      *
      * @param successors
-     * @param algo
      */
-    public abstract void insertAll(ArrayList<Node> successors, String algo);
+    public abstract void insertAll(ArrayList<Node> successors);
 
     /**
      * Insert the first node to frontier.

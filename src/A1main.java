@@ -47,18 +47,21 @@ public class A1main {
     }
 
     private static void runSearch(String algo, Map map, Coord start, Coord goal) {
-        Search search = new UninformedSearch(map, start, goal);
+        Search uninformed = new UninformedSearch(map, start, goal);
+        Search informed = new InformedSearch(map, start, goal);
 
         switch(algo) {
             case "BFS": //run BFS
-                search.treeSearch("BFS");
+                uninformed.treeSearch("BFS");
                 break;
             case "DFS": //run DFS
-                search.treeSearch("DFS");
+                uninformed.treeSearch("DFS");
                 break;
             case "BestF": //run BestF
+                informed.treeSearch("BestF");
                 break;
             case "AStar": //run AStar
+                informed.treeSearch("AStar");
                 break;
         }
 

@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.stream.Collectors;
 
 public class InformedSearch extends Search{
 
@@ -8,17 +10,33 @@ public class InformedSearch extends Search{
 
     public InformedSearch(Map map, Coord start, Coord goal) {
         super(map, start, goal);
-        this.frontier = new PriorityQueue<>();
+        this.frontier = new PriorityQueue<>(new Comparator<Node>() {
+            //TODO: maybe move this to a new class.
+            @Override
+            public int compare(Node n1, Node n2) {
+                if (n1.getF_Cost() < n2.getF_Cost()) {
+                    return -1;
+                } else if (n1.getF_Cost() > n2.getF_Cost()){
+                    return 1;
+                }
+                return 0;
+            }
+        });
     }
 
     @Override
     public ArrayList<Coord> getFrontierStates() {
-        return null;
+        ArrayList<Coord> frontierStates = new ArrayList<>();
+
+        for (Node node : frontier) {
+            frontierStates.add(node.getState());
+        }
+        return frontierStates;
     }
-    
+
 
     @Override
-    public void loopFrontier(String algo) {
+    public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(); // print frontier.
@@ -29,36 +47,57 @@ public class InformedSearch extends Search{
             if (goalTest(currentNode.getState(), getGoal())) {
                 printGoal(currentNode); // print the final goal output.
             } else {
-                insertAll(expand(currentNode), algo); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode)); // insert to the frontier all nodes returned from the expand function.
             }
         }
     }
 
+    /**
+     *
+     * @param node
+     */
     @Override
     public void insert(Node node) {
-
+        frontier.add(node);
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     @Override
     public ArrayList<Node> expand(Node node) {
-        return null;
+        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
+
+        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
+
+        // Iterate through the next states.
+        for (Coord state : nextStates) {
+            // if state is not contained in a node of explored or frontier.
+            if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
+                Node nd = new Node(node, state, getGoal(), 'M', getAlgo(), getStart()); //TODO: pass in heuristic and Algo
+                successors.add(nd);
+            }
+        }
+        return successors;
     }
 
     @Override
-    public void insertAll(ArrayList<Node> successors, String algo) {
+    public void insertAll(ArrayList<Node> successors) {
+        for (Node node : successors) {
+            frontier.add(node);
+        }
     }
-
-
 
     @Override
     public Node removeFromFrontier() {
-        return null;
+        return frontier.poll();
     }
 
     @Override
     public void printFrontier() {
-
+        System.out.println("["+frontier.stream().map(n->n.getState().toString() + ":" +n.getF_Cost()).collect(Collectors.joining(","))+"]");
     }
-
 
 }
