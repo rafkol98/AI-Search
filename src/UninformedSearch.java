@@ -21,7 +21,6 @@ public class UninformedSearch extends Search {
         Node initialNode = new Node(null, getStart()); // Create initial node.
 
         insert(initialNode, algo); // Insert initial node to the frontier.
-        printFrontier(); //Print initial state.
 
         // While the frontier is not empty, loop through it.
         while (!getFrontier().isEmpty()) {

@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 public abstract class Search {
 
@@ -265,9 +266,10 @@ public abstract class Search {
     public void printFrontier() {
         System.out.print("[");
 
-        for (Node node : frontier) {
-            System.out.print(node.getState());
-        }
+        System.out.print(frontier.stream().map(n->n.getState().toString()).collect(Collectors.joining(",")));
+//        for (Node node : frontier) {
+//            System.out.print(node.getState());
+//        }
         System.out.print("] \n");
     }
 
@@ -277,7 +279,7 @@ public abstract class Search {
      */
     public void printGoal(Node node) {
         Stack<Coord> pathStates = node.getPath(getStart());
-        int pathCost = pathStates.size();
+        float pathCost = pathStates.size() - 1;
 
         // Print path, path cost, and number of nodes explored.
         while (!pathStates.isEmpty()) {
@@ -291,7 +293,8 @@ public abstract class Search {
     }
 
     public void failure() {
-        System.out.println("Failure to find path");
+        System.out.println("fail");
+        System.out.println(getExplored().size());
         System.exit(0); // Exit system.
     }
 
