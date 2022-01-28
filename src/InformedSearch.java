@@ -35,6 +35,9 @@ public class InformedSearch extends Search{
     }
 
 
+    /**
+     *
+     */
     @Override
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
@@ -61,28 +64,19 @@ public class InformedSearch extends Search{
         frontier.add(node);
     }
 
-    /**
-     *
-     * @param node
-     * @return
-     */
     @Override
-    public ArrayList<Node> expand(Node node) {
-        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
-
-        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
-
-        // Iterate through the next states.
-        for (Coord state : nextStates) {
-            // if state is not contained in a node of explored or frontier.
-            if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
-                Node nd = new Node(node, state, getGoal(), 'M', getAlgo(), getStart()); //TODO: pass in heuristic and Algo
-                successors.add(nd);
-            }
+    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node node) {
+        // if state is not contained in a node of explored or frontier.
+        if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
+            Node nd = new Node(node, state, getGoal(), 'M', getAlgo(), getStart()); //TODO: pass in heuristic
+            successors.add(nd);
         }
-        return successors;
     }
 
+    /**
+     *
+     * @param successors
+     */
     @Override
     public void insertAll(ArrayList<Node> successors) {
         for (Node node : successors) {
@@ -90,11 +84,18 @@ public class InformedSearch extends Search{
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Node removeFromFrontier() {
         return frontier.poll();
     }
 
+    /**
+     *
+     */
     @Override
     public void printFrontier() {
         System.out.println("["+frontier.stream().map(n->n.getState().toString() + ":" +n.getF_Cost()).collect(Collectors.joining(","))+"]");

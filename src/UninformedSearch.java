@@ -36,27 +36,16 @@ public class UninformedSearch extends Search {
 
     }
 
-    /**
-     * Expand the search tree by creating a node for all legal states reachable from the current node.
-     * @param node
-     * @return
-     */
     @Override
-    public ArrayList<Node> expand(Node node) {
-        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
-
-        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
-
-        // Iterate through the next states.
-        for (Coord state : nextStates) {
-            // if state is not contained in a node of explored or frontier.
-            if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
-                Node nd = new Node(node, state);
-                successors.add(nd);
-            }
+    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node node) {
+        // if state is not contained in a node of explored or frontier.
+        if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
+            Node nd = new Node(node, state);
+            successors.add(nd);
         }
-        return successors;
     }
+
+
 
     public void insert(Node node) {
         frontier.add(node); // Add node.

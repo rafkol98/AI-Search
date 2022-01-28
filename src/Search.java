@@ -13,7 +13,6 @@ public abstract class Search {
     private String algo;
 
     /**
-     *
      * @param map
      * @param start
      * @param goal
@@ -34,12 +33,12 @@ public abstract class Search {
 
     /**
      * Get states of nodes that are included in the frontier.
+     *
      * @return
      */
     public abstract ArrayList<Coord> getFrontierStates();
 
     /**
-     *
      * @return
      */
     public int[][] getMap() {
@@ -47,7 +46,6 @@ public abstract class Search {
     }
 
     /**
-     *
      * @return
      */
     public Coord getStart() {
@@ -55,7 +53,6 @@ public abstract class Search {
     }
 
     /**
-     *
      * @return
      */
     public Coord getGoal() {
@@ -64,7 +61,6 @@ public abstract class Search {
 
 
     /**
-     *
      * @return
      */
     public ArrayList<Node> getExplored() {
@@ -72,7 +68,6 @@ public abstract class Search {
     }
 
     /**
-     *
      * @param node
      */
     public void addExplored(Node node) {
@@ -85,7 +80,6 @@ public abstract class Search {
     public abstract void printFrontier();
 
     /**
-     *
      * @param algo
      * @return
      */
@@ -102,17 +96,31 @@ public abstract class Search {
 
     }
 
+
     public abstract void loopFrontier();
 
     /**
-     *
      * @param node
      * @return
      */
-    public abstract ArrayList<Node> expand(Node node);
+    public ArrayList<Node> expand(Node node) {
+
+        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
+
+        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
+
+        // Iterate through the next states.
+        for (Coord state : nextStates) {
+            addSuitableSuccessors(state, successors, node);
+        }
+        return successors;
+
+    }
+
+    public abstract void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node node);
+
 
     /**
-     *
      * @param successors
      */
     public abstract void insertAll(ArrayList<Node> successors);
@@ -124,13 +132,13 @@ public abstract class Search {
     public abstract void insert(Node node);
 
     /**
-     *
      * @return
      */
     public abstract Node removeFromFrontier();
 
     /**
      * Get states of nodes that are included in the explored list.
+     *
      * @return
      */
     public ArrayList<Coord> getExploredStates() {
@@ -144,7 +152,6 @@ public abstract class Search {
     }
 
     /**
-     *
      * @param state
      * @param goal
      * @return
@@ -154,7 +161,6 @@ public abstract class Search {
     }
 
     /**
-     *
      * @param state
      * @return
      */
@@ -189,8 +195,6 @@ public abstract class Search {
     }
 
     /**
-     *
-     *
      * @param state
      * @param upwardsTriangleDirection
      * @return
@@ -267,6 +271,7 @@ public abstract class Search {
 
     /**
      * Print final output (when goal node is reached).
+     *
      * @param node
      */
     public void printGoal(Node node) {
@@ -276,7 +281,7 @@ public abstract class Search {
         while (!pathStates.isEmpty()) {
             System.out.print(pathStates.pop());
         }
-        System.out.println("\n"+node.getPathCost(getStart())); // Print path cost.
+        System.out.println("\n" + node.getPathCost(getStart())); // Print path cost.
         System.out.println(getExplored().size()); // Print nodes explored.
 
         System.exit(0); // Exit system.
