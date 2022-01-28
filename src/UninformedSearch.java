@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 public class UninformedSearch extends Search {
 
+    // Initialise frontier.
     private LinkedList<Node> frontier;
 
     /**

@@ -7,8 +7,8 @@ public class Node {
     private Node parent;
     private int depth;
     private Coord goal;
-    private double h_Cost;
-    private double f_Cost;
+    private double h_Cost = 0;
+    private double f_Cost = 0;
 
     /**
      *
@@ -109,6 +109,9 @@ public class Node {
             case "BestF":
                 return getH_Cost();
             case "AStar":
+                //TODO: debug this!
+//                System.out.println("H_Cost" + getH_Cost());
+//                System.out.println("Path_Cost" + getPathCost(start));
                 return getH_Cost() + getPathCost(start);
         }
             return 0;
@@ -153,7 +156,7 @@ public class Node {
         switch (heuristic) {
             // Manhattan distance.
             case 'M':
-                return Math.abs(deltaX) +  Math.abs(deltaY); // return manhattan distance.
+                return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
             // Euclidian distance.
             case 'E':
                 return Math.sqrt(Math.pow(deltaX,2) +  Math.pow(deltaY,2)); // return manhattan distance.

@@ -6,24 +6,19 @@ import java.util.stream.Collectors;
 
 public class InformedSearch extends Search{
 
+    // Initialise frontier.
     private PriorityQueue<Node> frontier;
 
     public InformedSearch(Map map, Coord start, Coord goal) {
         super(map, start, goal);
-        this.frontier = new PriorityQueue<>(new Comparator<Node>() {
-            //TODO: maybe move this to a new class.
-            @Override
-            public int compare(Node n1, Node n2) {
-                if (n1.getF_Cost() < n2.getF_Cost()) {
-                    return -1;
-                } else if (n1.getF_Cost() > n2.getF_Cost()){
-                    return 1;
-                }
-                return 0;
-            }
-        });
+        Comparator<Node> comparator = Comparator.comparing(Node::getF_Cost); // Comparator to sort the nodes based on their F_cost
+        this.frontier = new PriorityQueue<>(comparator);
     }
 
+    /**
+     * Get the states that are in the frontier state.
+     * @return the frontier states in an ArrayList.
+     */
     @Override
     public ArrayList<Coord> getFrontierStates() {
         ArrayList<Coord> frontierStates = new ArrayList<>();
@@ -36,13 +31,14 @@ public class InformedSearch extends Search{
 
 
     /**
-     *
+     * Loop through frontier
      */
     @Override
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(); // print frontier.
+//            debugFrontier();
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
             addExplored(currentNode); // Add current node to explored.
@@ -99,6 +95,15 @@ public class InformedSearch extends Search{
     @Override
     public void printFrontier() {
         System.out.println("["+frontier.stream().map(n->n.getState().toString() + ":" +n.getF_Cost()).collect(Collectors.joining(","))+"]");
+    }
+
+
+    public void debugFrontier() {
+        System.out.println("-- DEBUG --");
+        PriorityQueue<Node> tempFrontier = new PriorityQueue<>(frontier);
+        while (!tempFrontier.isEmpty()) {
+            System.out.println(tempFrontier.poll().getState());
+        }
     }
 
 }

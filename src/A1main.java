@@ -16,33 +16,14 @@ public class A1main {
     public static void main(String[] args) {
         //Example: java A1main BFS JCONF03
 
-        /*
-         *
-         * Retrieve input and configuration
-         * and run search algorithm
-         *
-         */
-
-
         Conf conf = Conf.valueOf(args[1]);
 
-
-        //Uncomment here for debugging only
-
-		/*
-		System.out.println("Configuration:"+args[1]);
-		System.out.println("Map:");
-		printMap(conf.getMap(), conf.getS(), conf.getG());
-		System.out.println("Departure port: Start (r_s,c_s): "+conf.getS());
-		System.out.println("Destination port: Goal (r_g,c_g): "+conf.getG());
-		System.out.println("Search algorithm: "+args[0]);
-		System.out.println();
-		*/
+        printMap(conf.getMap(), conf.getS(), conf.getG()); // TODO dont print-> have a flag for it.
 
         //run your search algorithm
         runSearch(args[0],conf.getMap(),conf.getS(),conf.getG());
 
-        printMap(conf.getMap(), conf.getS(), conf.getG());
+
 
     }
 
