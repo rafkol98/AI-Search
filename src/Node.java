@@ -2,7 +2,7 @@ import java.util.Stack;
 
 public class Node {
 
-
+    // Initialise Node variables.
     private Coord state;
     private Node parent;
     private int depth;
@@ -11,23 +11,28 @@ public class Node {
     private double f_Cost = 0;
 
     /**
+     * Create a new node.
      *
-     * @param parent
-     * @param state
+     * @param parent the parent node.
+     * @param state  the coordinates for the state of the node.
      */
-    public Node (Node parent, Coord state) {
+    public Node(Node parent, Coord state) {
         this.state = state;
         this.parent = parent;
-        this.depth = calculateDepth();
+        this.depth = calculateDepth(); // calculate depth of node using the calculateDepth function.
     }
 
     /**
+     * Create a new node (used for informed search).
      *
-     * @param state
-     * @param parent
-     * @param goal
+     * @param parent    the parent node.
+     * @param state     the coordinates for the state of the node.
+     * @param goal      the coordinates of the goal state.
+     * @param heuristic the heuristic to be used.
+     * @param algo      the algorithm to be used -> important for calculating the f_cost.
+     * @param start     the coordinates of the starting position -> important for calculating the f_cost.
      */
-    public Node (Node parent, Coord state, Coord goal, char heuristic, String algo, Coord start) {
+    public Node(Node parent, Coord state, Coord goal, char heuristic, String algo, Coord start) {
         this.state = state;
         this.parent = parent;
         this.depth = calculateDepth();
@@ -37,72 +42,76 @@ public class Node {
     }
 
     /**
+     * Get coordinates - state of the node.
      *
-     * @return
+     * @return the state of the node.
      */
     public Coord getState() {
         return state;
     }
 
     /**
+     * Get the parent of the node.
      *
-     * @return
+     * @return the parent of the node.
      */
     public Node getParent() {
         return parent;
     }
 
     /**
+     * Get depth of the node.
      *
-     * @return
+     * @return the depth of the node.
      */
     public int getDepth() {
         return depth;
     }
 
     /**
+     * Get the cost of the path up to the current node from the starting position.
      *
-     * @param start
-     * @return
+     * @param start the coordinates of the starting position.
+     * @return the cost of the path.
      */
     public float getPathCost(Coord start) {
-        return  getPath(start).size() - 1; // -1 is to remove the initial node from the cost.
+        return getPath(start).size() - 1; // -1 is to remove the initial node from the cost.
     }
 
     /**
+     * Get the heuristic cost (h_Cost) of the node.
      *
-     * @return
+     * @return the h_Cost of the node.
      */
     public double getH_Cost() {
         return h_Cost;
     }
 
     /**
+     * Get the function cost (f_Cost) of the node.
      *
-     * @return
+     * @return the f_Cost of the node.
      */
     public double getF_Cost() {
         return f_Cost;
     }
 
     /**
+     * Calculate depth.
      *
-     * @return
+     * @return the depth of the node.
      */
     private int calculateDepth() {
-        // Handle the initial case (when parent == null).
-        if(parent == null) {
-            return 1;
-        }
-        // Return number of steps along the path from the initial state.
-        else {
-            return parent.depth + 1;
-        }
+        // If parent == null (initial case), then return 1. Otherwise return the depth of the parent node + 1.
+        return (parent == null) ? 1 : parent.depth + 1;
     }
 
     /**
      * Calculate f_cost depending on the algorithm used.
-     * @return
+     *
+     * @param algo  the algorithm used.
+     * @param start the coordinates of the starting position.
+     * @return the calculated f_cost.
      */
     private double calculateFCost(String algo, Coord start) {
         switch (algo) {
@@ -114,16 +123,17 @@ public class Node {
 //                System.out.println("Path_Cost" + getPathCost(start));
                 return getH_Cost() + getPathCost(start);
         }
-            return 0;
+        return 0;
     }
 
     /**
      * Get path from a start node to the current one.
-     * @param start
-     * @return
+     *
+     * @param start the coordinates of the starting position.
+     * @return a Stack that contains the path from starting position to the goal.
      */
     public Stack<Coord> getPath(Coord start) {
-        Stack<Coord> pathStates = new Stack<>(); // ArrayList that holds the states in the path.
+        Stack<Coord> pathStates = new Stack<>(); // Stack that holds the states in the path.
 
         Boolean initial = false; // flag that determines if the coord are the initial.
         Node tempNode = this; // Assign node passed in to the new tempNode variable.
@@ -147,6 +157,8 @@ public class Node {
 
     /**
      * Calculate manhattan distance from the two cartesian coordinates passed in.
+     *
+     * @param heuristic the heuristic being used.
      * @return manhattan distance.
      */
     private double heuristicScore(char heuristic) {
@@ -159,13 +171,13 @@ public class Node {
                 return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
             // Euclidian distance.
             case 'E':
-                return Math.sqrt(Math.pow(deltaX,2) +  Math.pow(deltaY,2)); // return manhattan distance.
+                return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)); // return manhattan distance.
             // Chebyshev distance.
             case 'C':
                 return Math.max(Math.abs(deltaX), Math.abs(deltaY)); // return manhattan distance.
 
         }
-       return 0;
+        return 0;
     }
 
 }

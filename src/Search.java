@@ -4,8 +4,14 @@ import java.util.Queue;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+/**
+ * The Search class containing common methods used by both the UninformedSearch and InformedSearch classes.
+ *
+ * @author 210017984.
+ */
 public abstract class Search {
 
+    // Initialise variables.
     private int[][] map;
     private Coord start;
     private Coord goal;
@@ -23,37 +29,42 @@ public abstract class Search {
         this.goal = goal;
     }
 
+    /**
+     * Get algorithm selected..
+     *
+     * @return the algorithm selected.
+     */
     public String getAlgo() {
         return algo;
     }
 
+    /**
+     * Set algorithm selected by the user.
+     */
     public void setAlgo(String algo) {
         this.algo = algo;
     }
 
     /**
-     * Get states of nodes that are included in the frontier.
+     * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
      *
-     * @return
+     * @return an ArrayList containing all the states of the frontier.
      */
     public abstract ArrayList<Coord> getFrontierStates();
 
     /**
-     * @return
-     */
-    public int[][] getMap() {
-        return map;
-    }
-
-    /**
-     * @return
+     * Get coordinates of the starting position.
+     *
+     * @return the coordinates of the starting position.
      */
     public Coord getStart() {
         return start;
     }
 
     /**
-     * @return
+     * Get coordinates of the goal position.
+     *
+     * @return the coordinates of the goal position.
      */
     public Coord getGoal() {
         return goal;
@@ -61,14 +72,18 @@ public abstract class Search {
 
 
     /**
-     * @return
+     * Get nodes explored.
+     *
+     * @return ArrayList containing the nodes explored.
      */
     public ArrayList<Node> getExplored() {
         return explored;
     }
 
     /**
-     * @param node
+     * Add a node to the explored ArrayList.
+     *
+     * @param node the node to be added.
      */
     public void addExplored(Node node) {
         explored.add(node);
@@ -80,11 +95,12 @@ public abstract class Search {
     public abstract void printFrontier();
 
     /**
-     * @param algo
-     * @return
+     * Construct the search tree to find the goal.
+     *
+     * @param algo the algorithm used.
      */
     public void treeSearch(String algo) {
-        setAlgo(algo);
+        setAlgo(algo); // Set algorithm selected.
 
         Node initialNode = new Node(null, getStart()); // Create initial node.
 
@@ -97,11 +113,18 @@ public abstract class Search {
     }
 
 
+    /**
+     * IMPLEMENTED SEPERATELY FOR UNINFORMED AND INFORMED SEARCH.
+     * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
+     * Otherwise, it continues exploring the frontier until its empty.
+     */
     public abstract void loopFrontier();
 
     /**
-     * @param node
-     * @return
+     * Expand a node by finding its suitable successors (next possible moves).
+     *
+     * @param node the node to be expanded.
+     * @return an ArrayList containing all the legal and available successors of the node passed in.
      */
     public ArrayList<Node> expand(Node node) {
 
@@ -117,29 +140,42 @@ public abstract class Search {
 
     }
 
-    public abstract void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node node);
+    /**
+     * Ensures that the state being explored is not contained already in the frontier or was previously explored.
+     * If it is not, then it is added to the successors ArrayList passed in.
+     *
+     * @param state      the state being explored.
+     * @param successors the successors ArrayList - where we store all the suitable successors.
+     * @param parent     the parent node of the state.
+     */
+    public abstract void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent);
 
 
     /**
-     * @param successors
+     * Inserts all the successors to the frontier.
+     *
+     * @param successors the successors ArrayList containing all the suitable successors.
      */
     public abstract void insertAll(ArrayList<Node> successors);
 
     /**
-     * Insert the first node to frontier.
-     * The node is added for all the algorithms in the same order as this method is only used for the first node.
+     * Insert a node to the frontier.
+     *
+     * @param node the node to be added.
      */
     public abstract void insert(Node node);
 
     /**
-     * @return
+     * Removes the first element of the frontier (the one with the lowest F_Cost currently in the frontier).
+     *
+     * @return the node removed.
      */
     public abstract Node removeFromFrontier();
 
     /**
      * Get states of nodes that are included in the explored list.
      *
-     * @return
+     * @return the states of the nodes explored.
      */
     public ArrayList<Coord> getExploredStates() {
         ArrayList<Coord> exploredStates = new ArrayList<>();
@@ -152,12 +188,13 @@ public abstract class Search {
     }
 
     /**
-     * @param state
-     * @param goal
-     * @return
+     * Check if the state passed in is the goal state.
+     *
+     * @param state the coordinates of the state passed in.
+     * @return true if it is the goal, false otherwise.
      */
-    public boolean goalTest(Coord state, Coord goal) {
-        return state.equals(goal);
+    public boolean goalTest(Coord state) {
+        return state.equals(getGoal());
     }
 
     /**
