@@ -22,21 +22,6 @@ public class InformedSearch extends Search {
     }
 
     /**
-     * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
-     *
-     * @return an ArrayList containing all the states of the frontier.
-     */
-    @Override
-    public ArrayList<Coord> getFrontierStates() {
-        ArrayList<Coord> frontierStates = new ArrayList<>();
-        // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
-        for (Node node : frontier) {
-            frontierStates.add(node.getState());
-        }
-        return frontierStates;
-    }
-
-    /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
      */
@@ -44,7 +29,7 @@ public class InformedSearch extends Search {
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
-            printFrontier(); // print frontier.
+            printFrontier(frontier); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
             addExplored(currentNode); // Add current node to explored.
@@ -78,7 +63,7 @@ public class InformedSearch extends Search {
     @Override
     public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
         // if state is not contained in a node of explored or frontier.
-        if (!getFrontierStates().contains(state) && !getExploredStates().contains(state)) {
+        if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
             Node nd = new Node(parent, state, getGoal(), 'M', getAlgo(), getStart()); //TODO: pass in heuristic
             successors.add(nd);
         }
@@ -105,25 +90,5 @@ public class InformedSearch extends Search {
     public Node removeFromFrontier() {
         return frontier.poll();
     }
-
-    /**
-     * Print all the states currently in the frontier.
-     */
-    @Override
-    public void printFrontier() {
-        System.out.println("[" + frontier.stream().map(n -> n.getState().toString() + ":" + n.getF_Cost()).collect(Collectors.joining(",")) + "]");
-    }
-
-
-//    /**
-//     * Helper function that helped me debug that the priorityQueue works as expected.
-//     */
-//    public void debugFrontier() {
-//        System.out.println("-- DEBUG --");
-//        PriorityQueue<Node> tempFrontier = new PriorityQueue<>(frontier);
-//        while (!tempFrontier.isEmpty()) {
-//            System.out.println(tempFrontier.poll().getState());
-//        }
-//    }
 
 }

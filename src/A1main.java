@@ -30,6 +30,7 @@ public class A1main {
     private static void runSearch(String algo, Map map, Coord start, Coord goal) {
         Search uninformed = new UninformedSearch(map, start, goal);
         Search informed = new InformedSearch(map, start, goal);
+        BidirectionalSearch bidirectional = new BidirectionalSearch(map, start, goal);
 
         switch(algo) {
             case "BFS": //run BFS
@@ -43,6 +44,9 @@ public class A1main {
                 break;
             case "AStar": //run AStar
                 informed.treeSearch("AStar");
+                break;
+            case "Bidirectional": //run AStar
+                bidirectional.treeSearch();
                 break;
         }
 
