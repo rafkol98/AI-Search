@@ -36,7 +36,7 @@ public class BidirectionalSearch {
     }
 
     public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
-        System.out.println("ALO");
+
         for (Node node : explored) {
             if (node.getState().equals(state)) {
                 System.out.println("TEST: "+node.getState() +" ==? " + state);

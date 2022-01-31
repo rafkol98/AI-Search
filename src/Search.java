@@ -75,6 +75,22 @@ public abstract class Search {
     }
 
     /**
+     * Get a node that has the same state as the one passed in and is included in the frontier.
+     *
+     * @param frontier the frontier to be iterated.
+     * @param state the state that we are looking.
+     * @return the node that is included in the frontier.
+     */
+    public Node getNodeInFrontier(Collection<Node> frontier, Coord state) {
+        for (Node node : frontier) {
+            if (node.getState().equals(state)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get nodes explored.
      *
      * @return ArrayList containing the nodes explored.
@@ -95,11 +111,8 @@ public abstract class Search {
     /**
      * Print all the states currently in the frontier.
      *
-     * @param frontier the frontier to be printed.
      */
-    public void printFrontier(Collection<Node> frontier) {
-        System.out.println("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
-    }
+    public abstract void printFrontier();
 
     /**
      * Construct the search tree to find the goal.

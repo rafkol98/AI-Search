@@ -21,6 +21,15 @@ public class UninformedSearch extends Search {
     }
 
     /**
+     * Print all the states currently in the frontier.
+     *
+     */
+    @Override
+    public void printFrontier() {
+        System.out.println("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
+    }
+
+    /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
      */
@@ -28,7 +37,7 @@ public class UninformedSearch extends Search {
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
-            printFrontier(frontier); // print frontier.
+            printFrontier(); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
             addExplored(currentNode); // Add current node to explored.

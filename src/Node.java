@@ -75,7 +75,9 @@ public class Node {
      * @return the cost of the path.
      */
     public float getPathCost(Coord start) {
-        return getPath(start).size() - 1; // -1 is to remove the initial node from the cost.
+        //TODO: maybe need to add +1 for the cost from previous state to current.
+        //TODO : maybe need to -1 to remove the initial node from the cost.
+        return getPath(start).size();
     }
 
     /**
@@ -118,9 +120,6 @@ public class Node {
             case "BestF":
                 return getH_Cost();
             case "AStar":
-                //TODO: debug this!
-//                System.out.println("H_Cost" + getH_Cost());
-//                System.out.println("Path_Cost" + getPathCost(start));
                 return getH_Cost() + getPathCost(start);
         }
         return 0;
@@ -137,9 +136,6 @@ public class Node {
 
         Boolean initial = false; // flag that determines if the coord are the initial.
         Node tempNode = this; // Assign node passed in to the new tempNode variable.
-
-        System.out.println(tempNode.getParent());
-        System.out.println(tempNode.getState());
 
         pathStates.push(getState()); // Add the goal state (final node) to the stack.
 
@@ -168,7 +164,7 @@ public class Node {
         int deltaY = getState().getR() - goal.getR();
 
         switch (heuristic) {
-            // Manhattan distance.
+            // Manhattan distance (Cartesian Coordinates).
             case 'M':
                 return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
             // Euclidian distance.
