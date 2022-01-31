@@ -28,7 +28,7 @@ public class InformedSearch extends Search {
      *
      */
     @Override
-    public void printFrontier() {
+    public void printFrontier(Collection<Node> frontier) {
         System.out.println("["+frontier.stream().map(n->n.getState().toString() + ":" +n.getF_Cost()).collect(Collectors.joining(","))+"]");
     }
 
@@ -40,7 +40,7 @@ public class InformedSearch extends Search {
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
-            printFrontier(); // print frontier.
+            printFrontier(frontier); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
             addExplored(currentNode); // Add current node to explored.

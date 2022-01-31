@@ -67,10 +67,10 @@ public abstract class Search {
      */
     public ArrayList<Coord> getFrontierStates(Collection<Node> frontier) {
         ArrayList<Coord> frontierStates = new ArrayList<>();
+
         // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
-        for (Node node : frontier) {
-            frontierStates.add(node.getState());
-        }
+        frontier.stream().forEach(node -> frontierStates.add(node.getState()));
+
         return frontierStates;
     }
 
@@ -112,7 +112,7 @@ public abstract class Search {
      * Print all the states currently in the frontier.
      *
      */
-    public abstract void printFrontier();
+    public abstract void printFrontier(Collection<Node> frontier);
 
     /**
      * Construct the search tree to find the goal.
@@ -196,11 +196,9 @@ public abstract class Search {
      */
     public ArrayList<Coord> getExploredStates() {
         ArrayList<Coord> exploredStates = new ArrayList<>();
-        // Iterate through the nodes of the frontier, add state of all the nodes to
-        // the frontierStates ArrayList.
-        for (Node node : explored) {
-            exploredStates.add(node.getState());
-        }
+
+        explored.stream().forEach(node -> exploredStates.add(node.getState()));
+
         return exploredStates;
     }
 
@@ -329,7 +327,6 @@ public abstract class Search {
 
         System.exit(0); // Exit system.
     }
-
     /**
      * If the search could not find a solution, print fail message, the explored size, and then exit the system.
      */

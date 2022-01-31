@@ -5,7 +5,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 //Support for BFS and DFS.
-public class BidirectionalSearch {
+public class BidirectionalSearch extends Search{
 
     // Initialise frontier.
     private LinkedList<Node> frontier;
@@ -13,11 +13,6 @@ public class BidirectionalSearch {
 
     private boolean intersection = false;
     private Coord intersectionCoords;
-
-    // Initialise variables.
-    private int[][] map;
-    private Coord start;
-    private Coord goal;
 
     private ArrayList<Node> explored = new ArrayList<>();
     private ArrayList<Node> explored2 = new ArrayList<>();
@@ -28,12 +23,11 @@ public class BidirectionalSearch {
      * @param goal
      */
     public BidirectionalSearch(Map map, Coord start, Coord goal) {
-        this.map = map.getMap();
-        this.start = start;
-        this.goal = goal;
+        super(map, start, goal);
         this.frontier = new LinkedList<>();
         this.frontier2 = new LinkedList<>();
     }
+
 
     public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
 
@@ -81,19 +75,19 @@ public class BidirectionalSearch {
      *
      * @param frontier the frontier to be printed.
      */
+    @Override
     public void printFrontier(Collection<Node> frontier) {
-        System.out.println("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
+        System.out.print("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
     }
 
-    //******* CHANGED
     /**
      * Construct the search tree to find the goal.
      *
      */
     public void treeSearch() {
 
-        Node initialNode = new Node(null, start); // Create initial node.
-        Node endNode = new Node(null, goal); // Create initial node.
+        Node initialNode = new Node(null, getStart()); // Create initial node.
+        Node endNode = new Node(null, getGoal()); // Create initial node.
 
         insert(initialNode, frontier); // Insert initial node to the frontier.
         insert(endNode, frontier2);
@@ -103,17 +97,18 @@ public class BidirectionalSearch {
         failure(); // if path was not found -> print failure.
     }
 
-    //******* CHANGED
     /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
      */
+    @Override
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty() && !frontier2.isEmpty() && !intersection) {
             printFrontier(frontier); // print frontier.
-            printFrontier(frontier2); // print frontier.
-            System.out.println("--------------");
+            System.out.print(" , ");
+            printFrontier(frontier2); // print frontier2.
+            System.out.println();
 
             Node currentNode = removeFromFrontier(frontier);
             Node currentNode2  = removeFromFrontier(frontier2);
@@ -125,20 +120,19 @@ public class BidirectionalSearch {
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
                 printGoal(getNodeBasedOnState(explored, intersectionCoords), getNodeBasedOnState(explored2, intersectionCoords)); // print the final goal output.
             } else {
-                insertAll(expand(currentNode, 1), frontier); // insert to the frontier all nodes returned from the expand function.
-                insertAll(expand(currentNode2, 2), frontier2);
+                insertAll(expand(currentNode, frontier,1), frontier); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode2, frontier2,2), frontier2);
             }
         }
     }
 
-    //******* CHANGED
     /**
      * Expand a node by finding its suitable successors (next possible moves).
      *
      * @param node the node to be expanded.
      * @return an ArrayList containing all the legal and available successors of the node passed in.
      */
-    public ArrayList<Node> expand(Node node, int frontierNo) {
+    public ArrayList<Node> expand(Node node, LinkedList<Node> frontier, int frontierNo) {
 
         ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
 
@@ -146,7 +140,7 @@ public class BidirectionalSearch {
 
         // Iterate through the next states.
         for (Coord state : nextStates) {
-            addSuitableSuccessors(frontierNo,state, successors, node);
+            addSuitableSuccessors(frontier, frontierNo,state, successors, node);
         }
         return successors;
     }
@@ -159,9 +153,9 @@ public class BidirectionalSearch {
      * @param successors the successors ArrayList - where we store all the suitable successors.
      * @param parent     the parent node of the state.
      */
-    public void addSuitableSuccessors(int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
+    public void addSuitableSuccessors(LinkedList<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         // if state is not contained in a node of explored or frontier.
-        if (!getFrontierStates(frontierNo).contains(state) && !getExploredStates(frontierNo).contains(state)) {
+        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(frontierNo).contains(state)) {
             Node nd = new Node(parent, state);
             successors.add(nd);
         }
@@ -206,15 +200,13 @@ public class BidirectionalSearch {
     public ArrayList<Coord> getExploredStates(int frontierNo) {
         ArrayList<Coord> exploredStates = new ArrayList<>();
 
+        // Iterate through the nodes of the explored (depending on frontier no.), add state of all the nodes to
+        // the exploredStates ArrayList.
         if (frontierNo == 1) {
-            // Iterate through the nodes of the frontier, add state of all the nodes to
-            // the frontierStates ArrayList.
             for (Node node : explored) {
                 exploredStates.add(node.getState());
             }
         } else {
-            // Iterate through the nodes of the frontier, add state of all the nodes to
-            // the frontierStates ArrayList.
             for (Node node : explored2) {
                 exploredStates.add(node.getState());
             }
@@ -231,111 +223,10 @@ public class BidirectionalSearch {
      */
     public boolean intersect(Coord state) {
         if (getExploredStates(1).contains(state) && getExploredStates(2).contains(state)) {
-            System.out.println(state.getR() +" , "+state.getC());
             intersectionCoords = state; // store intersected state's coord.
             return true;
         }
-
         return false;
-
-    }
-
-    /**
-     * @param state
-     * @return
-     */
-    public ArrayList<Coord> successor(Coord state) {
-        boolean upwards = isTriangleUpwards(state); // Find if triangle points upwards (direction).
-
-        ArrayList<Coord> successorStates = new ArrayList<>(); // Initialise ArrayList to hold all the successor states.
-
-        int row = state.getR(); // Get row of state passed in.
-        int col = state.getC(); // Get column of state passed in.
-
-        Coord stateLeft = new Coord(row, col - 1); // Initialise the left state.
-        Coord stateRight = new Coord(row, col + 1); // Initialise the right state.
-        Coord stateVertical;
-
-        boolean down;
-
-        if (upwards) {
-            stateVertical = new Coord(row + 1, col); // Assign the downward state in the stateVertical.
-            down = true;
-        } else {
-            stateVertical = new Coord(row - 1, col); // Assign the upwards state in the stateVertical.
-            down = false;
-        }
-
-        // Tie breaking.
-        successorStates.add(stateRight); // Add the right position (1st priority).
-
-        // If the vertical state is down, then add it second (2nd priority)
-        if (down) {
-            successorStates.add(stateVertical);
-        }
-
-        successorStates.add(stateLeft);  // Add the left position (3rd priority)
-
-        // If the vertical state is upwards, then add it last (4th priority)
-        if (!down) {
-            successorStates.add(stateVertical);
-        }
-
-        return keepOnlyLegalStates(successorStates); // Keep and return only the legal states out of the ones added.
-    }
-
-    /**
-     * Get if a triangle is upwards or downwards facing.
-     *
-     * @param state
-     * @return if triangle is upwards or downwards pointing.
-     */
-    public boolean isTriangleUpwards(Coord state) {
-        int row = state.getR(); // Get row of state passed in.
-        int col = state.getC(); // Get column of state passed in.
-
-        boolean upwards; // flag to determine if triangle faces upwards or downwards.
-
-        // if row and column have modulo of 0 with 2, then the arrow is upwards facing.
-        if ((row % 2 == 0 && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1)) {
-            upwards = true;
-        } else {
-            upwards = false;
-        }
-
-        return upwards;
-    }
-
-
-    /**
-     * This method ensures that only legal states are kept.
-     * It ensures that both row and column are greater or equal than 0 (we cannot have negative coordinates) and less
-     * or equal than the map's row and column boundaries.
-     * It finally checks that the state is not an island i.e. has a value of 1 on the map.
-     *
-     * @param states
-     * @return
-     */
-    public ArrayList<Coord> keepOnlyLegalStates(ArrayList<Coord> states) {
-
-        ArrayList<Coord> legalStates = new ArrayList<>();
-
-        // Iterate through the states passed in, keep only the legal states.
-        for (Coord state : states) {
-
-            int row = state.getR(); // Get row of current state.
-            int col = state.getC(); // Get column of current state.
-
-            int rows = map.length - 1;
-            int columns = map[0].length - 1;
-
-            // Check that the current state is legal.
-            if ((row >= 0 && col >= 0) && (row <= rows && col <= columns) && (map[row][col] != 1)) {
-                legalStates.add(state); // add state to the legal states ArrayList.
-            }
-        }
-
-        return legalStates;
     }
 
     //TODO: have to fix this!!!
@@ -344,36 +235,23 @@ public class BidirectionalSearch {
      *
      */
     public void printGoal(Node node1, Node node2) {
-        Stack<Coord> pathStates = node1.getPath(start);
-        Stack<Coord> pathStates2 = node2.getPath(goal);
+        Stack<Coord> pathStates = node1.getPath(getStart());
+        Stack<Coord> pathStates2 = node2.getPath(getGoal());
         reverseStack(pathStates2);
         pathStates2.pop(); // remove first element (as it is the intersection).
 
-        //TODO: TEMPORARY - MERGE THEM!
-        // Print path, path cost, and number of nodes explored.
         while (!pathStates.isEmpty()) {
             System.out.print(pathStates.pop());
         }
         while (!pathStates2.isEmpty()) {
             System.out.print(pathStates2.pop());
         }
-        System.out.println();
-
-//        System.out.println("\n" + node.getPathCost(intersectionCoords)); // Print path cost.
-//        System.out.println(getExplored().size()); // Print nodes explored.
+        System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
+        System.out.println(explored.size() + " , " + explored2.size());
 
         System.exit(0); // Exit system.
     }
 
-    /**
-     * If the search could not find a solution, print fail message, the explored size, and then exit the system.
-     */
-    public void failure() {
-        System.out.println("fail");
-        //TODO: print explored.
-//        System.out.println(getExplored().size());
-        System.exit(0); // Exit system.
-    }
 
     // Recursive function to insert an item at the bottom of a given stack
     public static void insertAtBottom(Stack<Coord> s, Coord state)
@@ -401,6 +279,24 @@ public class BidirectionalSearch {
         insertAtBottom(s, state);
     }
 
+    @Override
+    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
 
+    }
+
+    @Override
+    public void insertAll(ArrayList<Node> successors) {
+
+    }
+
+    @Override
+    public void insert(Node node) {
+
+    }
+
+    @Override
+    public Node removeFromFrontier() {
+        return null;
+    }
 
 }
