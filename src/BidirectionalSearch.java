@@ -39,13 +39,11 @@ public class BidirectionalSearch {
 
         for (Node node : explored) {
             if (node.getState().equals(state)) {
-                System.out.println("TEST: "+node.getState() +" ==? " + state);
                 return node;
             }
         }
         return null;
     }
-
 
     /**
      * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
@@ -54,16 +52,11 @@ public class BidirectionalSearch {
      */
     public ArrayList<Coord> getFrontierStates(int frontierNo) {
         ArrayList<Coord> frontierStates = new ArrayList<>();
+        // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
         if (frontierNo == 1) {
-            // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
-            for (Node node : frontier) {
-                frontierStates.add(node.getState());
-            }
+            frontier.stream().forEach(node -> frontierStates.add(node.getState()));
         } else {
-            // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
-            for (Node node : frontier2) {
-                frontierStates.add(node.getState());
-            }
+            frontier2.stream().forEach(node -> frontierStates.add(node.getState()));
         }
 
         return frontierStates;
@@ -231,22 +224,20 @@ public class BidirectionalSearch {
     }
 
     /**
-     * Check if the state passed in is the goal state.
+     * Check if the state was explored by both sub-searches.
      *
      * @param state the coordinates of the state passed in.
-     * @return true if it is the goal, false otherwise.
+     * @return true if explored by both, false otherwise.
      */
     public boolean intersect(Coord state) {
         if (getExploredStates(1).contains(state) && getExploredStates(2).contains(state)) {
-            System.out.println("INTERSECTION");
-            System.out.println("Explored 1 :" + getExploredStates(1).toString());
-            System.out.println("Explored 2 :" + getExploredStates(2).toString());
             System.out.println(state.getR() +" , "+state.getC());
             intersectionCoords = state; // store intersected state's coord.
             return true;
-        } else {
-            return false;
         }
+
+        return false;
+
     }
 
     /**

@@ -142,6 +142,10 @@ public class Node {
         // Iterate until we reach the starting node.
         while (!initial) {
             tempNode = tempNode.getParent();
+            // Special case for when the intersection node is the same as the starting position (bidirectional search).
+            if (tempNode == null) {
+                break;
+            }
             pathStates.push(tempNode.getState());
 
             // if the parent node's state equals the starting node, then end while loop.
