@@ -5,7 +5,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 //Support for BFS and DFS.
-public class BidirectionalSearch extends Search{
+public class BidirectionalSearch extends UninformedSearch {
 
     // Initialise frontier.
     private LinkedList<Node> frontier;
@@ -173,7 +173,6 @@ public class BidirectionalSearch extends Search{
         }
     }
 
-    //******* CHANGED
     /**
      * Insert a node to the frontier.
      *
@@ -277,26 +276,6 @@ public class BidirectionalSearch extends Search{
         reverseStack(s);
 
         insertAtBottom(s, state);
-    }
-
-    @Override
-    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
-
-    }
-
-    @Override
-    public void insertAll(ArrayList<Node> successors) {
-
-    }
-
-    @Override
-    public void insert(Node node) {
-
-    }
-
-    @Override
-    public Node removeFromFrontier() {
-        return null;
     }
 
 }

@@ -121,8 +121,13 @@ public abstract class Search {
      */
     public void treeSearch(String algo) {
         setAlgo(algo); // Set algorithm selected.
+        Node initialNode;
+        if ((getAlgo() != "BestF") && (getAlgo() != "AStar")) {
+            initialNode = new Node(null, start); // Create initial node.
+        } else {
+            initialNode = new Node(null, start, getGoal(), 'M', getAlgo(), getStart());
+        }
 
-        Node initialNode = new Node(null, start); // Create initial node.
 
         insert(initialNode); // Insert initial node to the frontier.
 
@@ -256,6 +261,7 @@ public abstract class Search {
         return keepOnlyLegalStates(successorStates); // Keep and return only the legal states out of the ones added.
     }
 
+    //TODO: maybe move this to the Coord class.
     /**
      * Get if a triangle is upwards or downwards facing.
      *

@@ -23,8 +23,6 @@ public class A1main {
         //run your search algorithm
         runSearch(args[0],conf.getMap(),conf.getS(),conf.getG());
 
-
-
     }
 
     private static void runSearch(String algo, Map map, Coord start, Coord goal) {

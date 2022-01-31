@@ -22,7 +22,6 @@ public class UninformedSearch extends Search {
 
     /**
      * Print all the states currently in the frontier.
-     *
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
@@ -83,16 +82,23 @@ public class UninformedSearch extends Search {
      */
     @Override
     public void insertAll(ArrayList<Node> successors) {
-        for (Node node : successors) {
-            switch (getAlgo()) {
-                case "BFS":
-                    frontier.addLast(node);  // Add current node last - first in, first out.
-                    break;
-                case "DFS":
-                    frontier.addFirst(node); // Add current node first - first in, last out.
-                    break;
+        if (getAlgo().equals("DFS")) {
+            ArrayList<Node> reverseList = new ArrayList<>();
+            for (int i = successors.size() - 1; i >= 0; i--) {
+                reverseList.add(successors.get(i));
+            }
+
+            for (Node node : reverseList) {
+                frontier.addFirst(node);
+            }
+
+        } else if (getAlgo().equals("BFS")) {
+            for (Node node : successors) {
+                frontier.addLast(node);  // Add current node last - first in, first out.
+
             }
         }
+
     }
 
     /**

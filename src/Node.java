@@ -77,7 +77,7 @@ public class Node {
     public float getPathCost(Coord start) {
         //TODO: maybe need to add +1 for the cost from previous state to current.
         //TODO : maybe need to -1 to remove the initial node from the cost.
-        return getPath(start).size();
+        return getPath(start).size() - 1;
     }
 
     /**
@@ -164,8 +164,8 @@ public class Node {
      * @return manhattan distance.
      */
     private double heuristicScore(char heuristic) {
-        int deltaX = getState().getC() - goal.getC();
-        int deltaY = getState().getR() - goal.getR();
+        int deltaX = getState().getR() - goal.getR();
+        int deltaY = getState().getC() - goal.getC();
 
         switch (heuristic) {
             // Manhattan distance (Cartesian Coordinates).
@@ -173,10 +173,10 @@ public class Node {
                 return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
             // Euclidian distance.
             case 'E':
-                return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)); // return manhattan distance.
+                return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)); // return Euclidian distance.
             // Chebyshev distance.
             case 'C':
-                return Math.max(Math.abs(deltaX), Math.abs(deltaY)); // return manhattan distance.
+                return Math.max(Math.abs(deltaX), Math.abs(deltaY)); // return Chebyshev distance.
 
         }
         return 0;
