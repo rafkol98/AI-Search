@@ -35,6 +35,17 @@ public class BidirectionalSearch {
         this.frontier2 = new LinkedList<>();
     }
 
+    public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
+        System.out.println("ALO");
+        for (Node node : explored) {
+            if (node.getState().equals(state)) {
+                System.out.println("TEST: "+node.getState() +" ==? " + state);
+                return node;
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
@@ -56,16 +67,6 @@ public class BidirectionalSearch {
         }
 
         return frontierStates;
-    }
-
-    //******* CHANGED
-    /**
-     * Get nodes explored.
-     *
-     * @return ArrayList containing the nodes explored.
-     */
-    public ArrayList<Node> getExplored(int frontierNo) {
-        return frontierNo == 1 ?  explored : explored2;
     }
 
     //******* CHANGED
@@ -129,7 +130,7 @@ public class BidirectionalSearch {
             addExplored(currentNode2, 2);
 
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
-                printGoal(currentNode, currentNode2); // print the final goal output.
+                printGoal(getNodeBasedOnState(explored, intersectionCoords), getNodeBasedOnState(explored2, intersectionCoords)); // print the final goal output.
             } else {
                 insertAll(expand(currentNode, 1), frontier); // insert to the frontier all nodes returned from the expand function.
                 insertAll(expand(currentNode2, 2), frontier2);
@@ -346,13 +347,16 @@ public class BidirectionalSearch {
         return legalStates;
     }
 
+    //TODO: have to fix this!!!
     /**
      * Print final output (when goal node is reached).
      *
      */
     public void printGoal(Node node1, Node node2) {
-        Stack<Coord> pathStates = node1.getPath(intersectionCoords);
-        Stack<Coord> pathStates2 = node2.getPath(intersectionCoords);
+        Stack<Coord> pathStates = node1.getPath(start);
+        Stack<Coord> pathStates2 = node2.getPath(goal);
+        reverseStack(pathStates2);
+        pathStates2.pop(); // remove first element (as it is the intersection).
 
         //TODO: TEMPORARY - MERGE THEM!
         // Print path, path cost, and number of nodes explored.
@@ -360,8 +364,9 @@ public class BidirectionalSearch {
             System.out.print(pathStates.pop());
         }
         while (!pathStates2.isEmpty()) {
-            System.out.print(pathStates.pop());
+            System.out.print(pathStates2.pop());
         }
+        System.out.println();
 
 //        System.out.println("\n" + node.getPathCost(intersectionCoords)); // Print path cost.
 //        System.out.println(getExplored().size()); // Print nodes explored.
@@ -378,6 +383,33 @@ public class BidirectionalSearch {
 //        System.out.println(getExplored().size());
         System.exit(0); // Exit system.
     }
+
+    // Recursive function to insert an item at the bottom of a given stack
+    public static void insertAtBottom(Stack<Coord> s, Coord state)
+    {
+        if (s.empty())
+        {
+            s.push(state);
+            return;
+        }
+        Coord top = s.pop();
+        insertAtBottom(s, state);
+        s.push(top);
+    }
+
+    // Recursive function to reverse a given stack
+    public static void reverseStack(Stack<Coord> s)
+    {
+        // base case: stack is empty
+        if (s.empty()) {
+            return;
+        }
+        Coord state = s.pop();
+        reverseStack(s);
+
+        insertAtBottom(s, state);
+    }
+
 
 
 }

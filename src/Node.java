@@ -138,6 +138,8 @@ public class Node {
         Boolean initial = false; // flag that determines if the coord are the initial.
         Node tempNode = this; // Assign node passed in to the new tempNode variable.
 
+        System.out.println(tempNode.getParent());
+        System.out.println(tempNode.getState());
 
         pathStates.push(getState()); // Add the goal state (final node) to the stack.
 
