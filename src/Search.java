@@ -45,7 +45,7 @@ public abstract class Search {
     }
 
     /**
-     * Get algorithm selected..
+     * Get algorithm selected.
      *
      * @return the algorithm selected.
      */
@@ -122,10 +122,12 @@ public abstract class Search {
     public void treeSearch(String algo) {
         setAlgo(algo); // Set algorithm selected.
         Node initialNode;
-        if ((getAlgo() != "BestF") && (getAlgo() != "AStar")) {
-            initialNode = new Node(null, start); // Create initial node.
-        } else {
+
+        // Create initial node.
+        if ((getAlgo() == "BestF") && (getAlgo() == "AStar")) {
             initialNode = new Node(null, start, getGoal(), 'M', getAlgo(), getStart());
+        } else {
+            initialNode = new Node(null, start);
         }
 
 
@@ -137,7 +139,6 @@ public abstract class Search {
     }
 
     /**
-     * IMPLEMENTED SEPERATELY FOR UNINFORMED AND INFORMED SEARCH.
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
      */
@@ -218,6 +219,9 @@ public abstract class Search {
     }
 
     /**
+     * Find the next possible moves for the state passed in. Add the successor states in a List according to the tie
+     * breaking constraints specified.
+     *
      * @param state
      * @return
      */
@@ -321,7 +325,7 @@ public abstract class Search {
      *
      * @param node
      */
-    public void printGoal(Node node) {
+    public void printOutput(Node node) {
         Stack<Coord> pathStates = node.getPath(start);
 
         // Print path, path cost, and number of nodes explored.

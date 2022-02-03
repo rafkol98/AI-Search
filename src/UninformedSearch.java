@@ -42,7 +42,7 @@ public class UninformedSearch extends Search {
             addExplored(currentNode); // Add current node to explored.
 
             if (goalTest(currentNode.getState())) {
-                printGoal(currentNode); // print the final goal output.
+                printOutput(currentNode); // print the final goal output.
             } else {
                 insertAll(expand(currentNode)); // insert to the frontier all nodes returned from the expand function.
             }
@@ -98,7 +98,6 @@ public class UninformedSearch extends Search {
 
             }
         }
-
     }
 
     /**
