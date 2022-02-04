@@ -22,12 +22,11 @@ public class BidirectionalSearch extends UninformedSearch {
      * @param start
      * @param goal
      */
-    public BidirectionalSearch(Map map, Coord start, Coord goal) {
-        super(map, start, goal);
+    public BidirectionalSearch(Map map, Coord start, Coord goal, char heuristic) {
+        super(map, start, goal, heuristic);
         this.frontier = new LinkedList<>();
         this.frontier2 = new LinkedList<>();
     }
-
 
     public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
 
@@ -39,24 +38,6 @@ public class BidirectionalSearch extends UninformedSearch {
         return null;
     }
 
-    /**
-     * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
-     *
-     * @return an ArrayList containing all the states of the frontier.
-     */
-    public ArrayList<Coord> getFrontierStates(int frontierNo) {
-        ArrayList<Coord> frontierStates = new ArrayList<>();
-        // Iterate through the frontier, adding each node's state to the frontierStates ArrayList.
-        if (frontierNo == 1) {
-            frontier.stream().forEach(node -> frontierStates.add(node.getState()));
-        } else {
-            frontier2.stream().forEach(node -> frontierStates.add(node.getState()));
-        }
-
-        return frontierStates;
-    }
-
-    //******* CHANGED
     /**
      * Add a node to the explored ArrayList.
      *
@@ -161,7 +142,6 @@ public class BidirectionalSearch extends UninformedSearch {
         }
     }
 
-    //******* CHANGED
     /**
      * Inserts all the successors to the frontier.
      *
@@ -228,7 +208,6 @@ public class BidirectionalSearch extends UninformedSearch {
         return false;
     }
 
-    //TODO: have to fix this!!!
     /**
      * Print final output (when goal node is reached).
      *

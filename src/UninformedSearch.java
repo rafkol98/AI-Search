@@ -15,8 +15,8 @@ public class UninformedSearch extends Search {
      * @param start the starting coordinates.
      * @param goal  the goal coordinates.
      */
-    public UninformedSearch(Map map, Coord start, Coord goal) {
-        super(map, start, goal);
+    public UninformedSearch(Map map, Coord start, Coord goal, char heuristic) {
+        super(map, start, goal, heuristic);
         this.frontier = new LinkedList<>();
     }
 

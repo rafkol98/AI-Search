@@ -14,16 +14,18 @@ public abstract class Search {
     private Coord goal;
     private ArrayList<Node> explored = new ArrayList<>();
     private String algo;
+    private char heuristic;
 
     /**
      * @param map
      * @param start
      * @param goal
      */
-    public Search(Map map, Coord start, Coord goal) {
+    public Search(Map map, Coord start, Coord goal, char heuristic) {
         this.map = map.getMap();
         this.start = start;
         this.goal = goal;
+        this.heuristic = heuristic;
     }
 
     /**
@@ -58,6 +60,14 @@ public abstract class Search {
      */
     public void setAlgo(String algo) {
         this.algo = algo;
+    }
+
+    /**
+     * Get heuristic selected by the user.
+     * @return heuristic selected.
+     */
+    public char getHeuristic() {
+        return heuristic;
     }
 
     /**
@@ -125,7 +135,7 @@ public abstract class Search {
 
         // Create initial node.
         if ((getAlgo() == "BestF") && (getAlgo() == "AStar")) {
-            initialNode = new Node(null, start, getGoal(), 'M', getAlgo(), getStart());
+            initialNode = new Node(null, start, getGoal(), getHeuristic(), getAlgo(), getStart());
         } else {
             initialNode = new Node(null, start);
         }

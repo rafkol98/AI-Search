@@ -14,21 +14,41 @@
 public class A1main {
 
     public static void main(String[] args) {
-        //Example: java A1main BFS JCONF03
+        //Example: java A1main BFS JCONF03 M
 
-        Conf conf = Conf.valueOf(args[1]);
+        try {
+            Conf conf = Conf.valueOf(args[1]);
+            String heuristic;
+            // Check if heuristic is passed in.
+            if (args.length == 3){
+                heuristic= args[2];
+            } else {
+                heuristic = "M";
+            }
 
-        printMap(conf.getMap(), conf.getS(), conf.getG()); // TODO dont print-> have a flag for it.
+            if (heuristic.charAt(0) == 'M' || heuristic.charAt(0) == 'E' ||  heuristic.charAt(0) == 'C') {
+                printMap(conf.getMap(), conf.getS(), conf.getG()); // TODO dont print-> have a flag for it.
+                //run your search algorithm
+                runSearch(args[0],conf.getMap(),conf.getS(),conf.getG(), heuristic.charAt(0));
+            } else {
+                System.out.println("Accepted heuristics: M, E, C");
+                System.exit(-1);
+            }
 
-        //run your search algorithm
-        runSearch(args[0],conf.getMap(),conf.getS(),conf.getG());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            //TODO: fix the instructions.
+            System.out.println("There was a problem. Please run the program like this java A1main BFS JCONF03 M");
+        }
+
 
     }
 
-    private static void runSearch(String algo, Map map, Coord start, Coord goal) {
-        Search uninformed = new UninformedSearch(map, start, goal);
-        Search informed = new InformedSearch(map, start, goal);
-        BidirectionalSearch bidirectional = new BidirectionalSearch(map, start, goal);
+    private static void runSearch(String algo, Map map, Coord start, Coord goal, char heuristic) {
+        Search uninformed = new UninformedSearch(map, start, goal, heuristic);
+        Search informed = new InformedSearch(map, start, goal, heuristic);
+        BidirectionalSearch bidirectional = new BidirectionalSearch(map, start, goal, heuristic);
 
         switch(algo) {
             case "BFS": //run BFS

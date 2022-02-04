@@ -16,8 +16,8 @@ public class InformedSearch extends Search {
      * @param start the starting coordinates.
      * @param goal  the goal coordinates.
      */
-    public InformedSearch(Map map, Coord start, Coord goal) {
-        super(map, start, goal);
+    public InformedSearch(Map map, Coord start, Coord goal, char heuristic) {
+        super(map, start, goal, heuristic);
         Comparator<Node> comparator = Comparator.comparing(Node::getF_Cost); // Comparator to sort the nodes based on their F_cost
         this.frontier = new PriorityQueue<>(comparator);
     }
@@ -73,7 +73,7 @@ public class InformedSearch extends Search {
      */
     @Override
     public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
-        Node nd = new Node(parent, state, getGoal(), 'M', getAlgo(), getStart()); //TODO: pass in heuristic
+        Node nd = new Node(parent, state, getGoal(), getHeuristic(), getAlgo(), getStart()); //TODO: pass in heuristic
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
             successors.add(nd);
