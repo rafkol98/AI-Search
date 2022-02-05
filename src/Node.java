@@ -158,7 +158,7 @@ public class Node {
     }
 
     /**
-     * Calculate manhattan distance from the two cartesian coordinates passed in.
+     * Calculate heuristic cost.
      *
      * @param heuristic the heuristic being used.
      * @return manhattan distance.

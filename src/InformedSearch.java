@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -25,11 +26,11 @@ public class InformedSearch extends Search {
 
     /**
      * Print all the states currently in the frontier.
-     *
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
-        System.out.println("["+frontier.stream().map(n->n.getState().toString() + ":" +n.getF_Cost()).collect(Collectors.joining(","))+"]");
+        DecimalFormat df = new DecimalFormat("0.00"); // Get cost in 2 decimal places.
+        System.out.println("[" + frontier.stream().map(n -> n.getState().toString() + ":" + df.format(n.getF_Cost())).collect(Collectors.joining(",")) + "]");
     }
 
     /**
@@ -77,7 +78,7 @@ public class InformedSearch extends Search {
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
             successors.add(nd);
-        } else if ((getAlgo() == "AStar") && getFrontierStates(frontier).contains(state) && getNodeInFrontier(frontier, state) != null && (getNodeInFrontier(frontier, state).getPathCost(getStart()) > nd.getPathCost(getStart()) ) ){
+        } else if ((getAlgo() == "AStar") && getFrontierStates(frontier).contains(state) && getNodeInFrontier(frontier, state) != null && (getNodeInFrontier(frontier, state).getPathCost(getStart()) > nd.getPathCost(getStart()))) {
             replaceNodeInFrontier(state, nd); // replace old node with the new one with the lower path cost.
         }
     }
@@ -106,11 +107,12 @@ public class InformedSearch extends Search {
 
     /**
      * Replace node in the frontier with a new node with lower cost.
-     * @param state the state we are looking.
+     *
+     * @param state   the state we are looking.
      * @param newNode the new node that will replace the old.
      */
     private void replaceNodeInFrontier(Coord state, Node newNode) {
-        if(frontier.removeIf(i -> i.getState().equals(state))) {
+        if (frontier.removeIf(i -> i.getState().equals(state))) {
             frontier.add(newNode);
         }
     }
