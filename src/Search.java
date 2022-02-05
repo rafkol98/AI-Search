@@ -134,12 +134,11 @@ public abstract class Search {
         Node initialNode;
 
         // Create initial node.
-        if ((getAlgo() == "BestF") && (getAlgo() == "AStar")) {
+        if ((getAlgo().equals("BestF")) || (getAlgo().equals("AStar"))) {
             initialNode = new Node(null, start, getGoal(), getHeuristic(), getAlgo(), getStart());
         } else {
             initialNode = new Node(null, start);
         }
-
 
         insert(initialNode); // Insert initial node to the frontier.
 

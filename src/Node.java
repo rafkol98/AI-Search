@@ -164,6 +164,7 @@ public class Node {
      * @return manhattan distance.
      */
     private double heuristicScore(char heuristic) {
+        //TODO: maybe reverse their oder of subtraction.
         int deltaX = getState().getR() - goal.getR();
         int deltaY = getState().getC() - goal.getC();
 
