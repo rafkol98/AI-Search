@@ -238,8 +238,7 @@ public abstract class Search {
      * @return
      */
     public ArrayList<Coord> successor(Coord state) {
-        int downwards = state.getTriangleDirection();
-//        boolean upwards = isTriangleUpwards(state); // Find if triangle points upwards (direction).
+        int downwards = state.getTriangleDirection(); // get if triangle direction is downwards.
 
         ArrayList<Coord> successorStates = new ArrayList<>(); // Initialise ArrayList to hold all the successor states.
 
@@ -250,28 +249,28 @@ public abstract class Search {
         Coord stateRight = new Coord(row, col + 1); // Initialise the right state.
         Coord stateVertical;
 
-        boolean down;
+        boolean assignBelow; // vertical state is the one below (down) or not? (the one above).
 
-        if (downwards == 0) {
-            stateVertical = new Coord(row + 1, col); // Assign the downward state in the stateVertical.
-            down = true;
-        } else {
+        if (downwards == 1) {
             stateVertical = new Coord(row - 1, col); // Assign the upwards state in the stateVertical.
-            down = false;
+            assignBelow = false;
+        } else {
+            stateVertical = new Coord(row + 1, col); // Assign the downward state in the stateVertical.
+            assignBelow = true;
         }
 
         // Tie breaking.
         successorStates.add(stateRight); // Add the right position (1st priority).
 
         // If the vertical state is down, then add it second (2nd priority)
-        if (down) {
+        if (assignBelow) {
             successorStates.add(stateVertical);
         }
 
         successorStates.add(stateLeft);  // Add the left position (3rd priority)
 
         // If the vertical state is upwards, then add it last (4th priority)
-        if (!down) {
+        if (!assignBelow) {
             successorStates.add(stateVertical);
         }
 
