@@ -37,7 +37,7 @@ public class InformedSearch extends Search {
     @Override
     public void loopFrontier(Node initialNode) {
         insert(initialNode, frontier); // Insert initial node to the frontier.
-        
+
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(frontier); // print frontier.

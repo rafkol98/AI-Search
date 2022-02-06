@@ -26,6 +26,15 @@ public class BidirectionalSearch extends UninformedSearch {
         this.frontier2 = new LinkedList<>();
     }
 
+    /**
+     * Get a node from an explored ArrayList that has the same state as the one passed in.
+     * This is very important for getting the node of intersection between the two explored
+     * ArrayLists.
+     *
+     * @param explored
+     * @param state
+     * @return
+     */
     public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
         for (Node node : explored) {
             if (node.getState().equals(state)) {
@@ -143,30 +152,39 @@ public class BidirectionalSearch extends UninformedSearch {
         System.exit(0); // Exit system.
     }
 
-    // Recursive function to insert an item at the bottom of a given stack
-    public static void insertAtBottom(Stack<Coord> s, Coord state)
+
+    /**
+     * Recursive function that adds states at the bottom of a stack.
+     *
+     * @param stack the stack to insert states at the bottom to.
+     * @param state the state to be added.
+     */
+    public static void insertAtBottom(Stack<Coord> stack, Coord state)
     {
-        if (s.empty())
+        if (stack.empty())
         {
-            s.push(state);
+            stack.push(state);
             return;
         }
-        Coord top = s.pop();
-        insertAtBottom(s, state);
-        s.push(top);
+        Coord top = stack.pop();
+        insertAtBottom(stack, state); // recursive call.
+        stack.push(top);
     }
 
-    // Recursive function to reverse a given stack
-    public static void reverseStack(Stack<Coord> s)
+    /**
+     * Reverse a given stack
+     *
+     * @param stack the stack to be reversed.
+     */
+    public static void reverseStack(Stack<Coord> stack)
     {
-        // base case: stack is empty
-        if (s.empty()) {
+        // if stack is empty, then the stack was reversed.
+        if (stack.empty()) {
             return;
         }
-        Coord state = s.pop();
-        reverseStack(s);
-
-        insertAtBottom(s, state);
+        Coord state = stack.pop();
+        reverseStack(stack); // recursive call.
+        insertAtBottom(stack, state);
     }
 
 }

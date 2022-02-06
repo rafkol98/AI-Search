@@ -238,7 +238,8 @@ public abstract class Search {
      * @return
      */
     public ArrayList<Coord> successor(Coord state) {
-        boolean upwards = isTriangleUpwards(state); // Find if triangle points upwards (direction).
+        int downwards = state.getTriangleDirection();
+//        boolean upwards = isTriangleUpwards(state); // Find if triangle points upwards (direction).
 
         ArrayList<Coord> successorStates = new ArrayList<>(); // Initialise ArrayList to hold all the successor states.
 
@@ -251,7 +252,7 @@ public abstract class Search {
 
         boolean down;
 
-        if (upwards) {
+        if (downwards == 0) {
             stateVertical = new Coord(row + 1, col); // Assign the downward state in the stateVertical.
             down = true;
         } else {
@@ -275,29 +276,6 @@ public abstract class Search {
         }
 
         return keepOnlyLegalStates(successorStates); // Keep and return only the legal states out of the ones added.
-    }
-
-    //TODO: maybe move this to the Coord class.
-    /**
-     * Get if a triangle is upwards or downwards facing.
-     *
-     * @param state
-     * @return if triangle is upwards or downwards pointing.
-     */
-    public boolean isTriangleUpwards(Coord state) {
-        int row = state.getR(); // Get row of state passed in.
-        int col = state.getC(); // Get column of state passed in.
-
-        boolean upwards; // flag to determine if triangle faces upwards or downwards.
-
-        // if row and column have modulo of 0 with 2, then the arrow is upwards facing.
-        if ((row % 2 == 0 && col % 2 == 0) || (row % 2 == 1 && col % 2 == 1)) {
-            upwards = true;
-        } else {
-            upwards = false;
-        }
-
-        return upwards;
     }
 
 

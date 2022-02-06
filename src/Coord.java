@@ -39,4 +39,23 @@ public class Coord {
 
     }
 
+
+    /**
+     * Get if a triangle is upwards or downwards facing.
+     *
+     * @return 1 if triangle is downwards pointing, 0 otherwise.
+     */
+    public int getTriangleDirection() {
+        int downwards; // flag to determine if triangle faces upwards or downwards.
+
+        // if row and column have modulo of 0 with 2, then the arrow is upwards facing.
+        if ((r % 2 == 0 && c % 2 == 0) || (r % 2 == 1 && c % 2 == 1)) {
+            downwards = 0;
+        } else {
+            downwards = 1;
+        }
+
+        return downwards;
+    }
+
 }

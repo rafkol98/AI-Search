@@ -172,6 +172,8 @@ public class Node {
             // Manhattan distance (Cartesian Coordinates).
             case 'M':
                 return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
+            case 'T':
+                return manhattanTriangle(); // return manhattan distance.
             // Euclidian distance.
             case 'E':
                 return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)); // return Euclidian distance.
@@ -182,5 +184,20 @@ public class Node {
         }
         return 0;
     }
+
+    private double manhattanTriangle() {
+        double a = -state.getR();
+        double b = (state.getR() + state.getC() - state.getTriangleDirection())/2;
+        double c = (state.getR() + state.getC() - state.getTriangleDirection())/2 - state.getR() + state.getTriangleDirection();
+
+        double aG = -goal.getR();
+        double bG = (goal.getR() + goal.getC() - goal.getTriangleDirection())/2;
+        double cG = (goal.getR() + goal.getC() - goal.getTriangleDirection())/2 - goal.getR() + goal.getTriangleDirection();
+
+        return Math.abs(a - aG) + Math.abs(b - bG) + Math.abs(c - cG);
+
+    }
+
+
 
 }
