@@ -159,7 +159,20 @@ public abstract class Search {
      * @param node the node to be expanded.
      * @return an ArrayList containing all the legal and available successors of the node passed in.
      */
-    public ArrayList<Node> expand(Node node) {
+//    public ArrayList<Node> expand(Node node) {
+//
+//        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
+//
+//        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
+//
+//        // Iterate through the next states.
+//        for (Coord state : nextStates) {
+//            addSuitableSuccessors(state, successors, node);
+//        }
+//        return successors;
+//    }
+
+    public ArrayList<Node> expand(Node node, Collection<Node> frontier, int frontierNo) {
 
         ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
 
@@ -167,7 +180,7 @@ public abstract class Search {
 
         // Iterate through the next states.
         for (Coord state : nextStates) {
-            addSuitableSuccessors(state, successors, node);
+            addSuitableSuccessors(frontier, frontierNo,state, successors, node);
         }
         return successors;
     }
@@ -180,7 +193,7 @@ public abstract class Search {
      * @param successors the successors ArrayList - where we store all the suitable successors.
      * @param parent     the parent node of the state.
      */
-    public abstract void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent);
+    public abstract void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent);
 
 
     /**

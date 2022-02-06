@@ -1,8 +1,5 @@
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class InformedSearch extends Search {
@@ -49,7 +46,7 @@ public class InformedSearch extends Search {
             if (goalTest(currentNode.getState())) {
                 printOutput(currentNode); // print the final goal output.
             } else {
-                insertAll(expand(currentNode)); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode, frontier, 0)); // insert to the frontier all nodes returned from the expand function.
             }
         }
     }
@@ -73,7 +70,7 @@ public class InformedSearch extends Search {
      * @param parent     the parent node of the state.
      */
     @Override
-    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
+    public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         Node nd = new Node(parent, state, getGoal(), getHeuristic(), getAlgo(), getStart()); //TODO: pass in heuristic
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {

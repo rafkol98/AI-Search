@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class BidirectionalSearch extends UninformedSearch {
 
     // Initialise frontier.
-    private LinkedList<Node> frontier;
+//    private LinkedList<Node> frontier;
     private LinkedList<Node> frontier2;
 
     private boolean intersection = false;
@@ -24,7 +24,7 @@ public class BidirectionalSearch extends UninformedSearch {
      */
     public BidirectionalSearch(Map map, Coord start, Coord goal, char heuristic) {
         super(map, start, goal, heuristic);
-        this.frontier = new LinkedList<>();
+//        this.frontier = new LinkedList<>();
         this.frontier2 = new LinkedList<>();
     }
 
@@ -61,6 +61,11 @@ public class BidirectionalSearch extends UninformedSearch {
         System.out.print("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
     }
 
+//    @Override
+//    public void treeSearch(String algo) {
+//        super.treeSearch(algo);
+//    }
+
     /**
      * Construct the search tree to find the goal.
      *
@@ -70,7 +75,7 @@ public class BidirectionalSearch extends UninformedSearch {
         Node initialNode = new Node(null, getStart()); // Create initial node.
         Node endNode = new Node(null, getGoal()); // Create initial node.
 
-        insert(initialNode, frontier); // Insert initial node to the frontier.
+        insert(initialNode, getFrontier()); // Insert initial node to the frontier.
         insert(endNode, frontier2);
 
         loopFrontier();
@@ -85,13 +90,13 @@ public class BidirectionalSearch extends UninformedSearch {
     @Override
     public void loopFrontier() {
         // While the frontier is not empty, loop through it.
-        while (!frontier.isEmpty() && !frontier2.isEmpty() && !intersection) {
-            printFrontier(frontier); // print frontier.
+        while (!getFrontier().isEmpty() && !frontier2.isEmpty() && !intersection) {
+            printFrontier(getFrontier()); // print frontier.
             System.out.print(" , ");
             printFrontier(frontier2); // print frontier2.
             System.out.println();
 
-            Node currentNode = removeFromFrontier(frontier);
+            Node currentNode = removeFromFrontier(getFrontier());
             Node currentNode2  = removeFromFrontier(frontier2);
 
             // Add current node to explored.
@@ -101,29 +106,10 @@ public class BidirectionalSearch extends UninformedSearch {
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
                 printGoal(getNodeBasedOnState(explored, intersectionCoords), getNodeBasedOnState(explored2, intersectionCoords)); // print the final goal output.
             } else {
-                insertAll(expand(currentNode, frontier,1), frontier); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode, getFrontier(),1), getFrontier()); // insert to the frontier all nodes returned from the expand function.
                 insertAll(expand(currentNode2, frontier2,2), frontier2);
             }
         }
-    }
-
-    /**
-     * Expand a node by finding its suitable successors (next possible moves).
-     *
-     * @param node the node to be expanded.
-     * @return an ArrayList containing all the legal and available successors of the node passed in.
-     */
-    public ArrayList<Node> expand(Node node, LinkedList<Node> frontier, int frontierNo) {
-
-        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
-
-        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
-
-        // Iterate through the next states.
-        for (Coord state : nextStates) {
-            addSuitableSuccessors(frontier, frontierNo,state, successors, node);
-        }
-        return successors;
     }
 
     /**
@@ -134,7 +120,8 @@ public class BidirectionalSearch extends UninformedSearch {
      * @param successors the successors ArrayList - where we store all the suitable successors.
      * @param parent     the parent node of the state.
      */
-    public void addSuitableSuccessors(LinkedList<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
+    @Override
+    public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates(frontierNo).contains(state)) {
             Node nd = new Node(parent, state);

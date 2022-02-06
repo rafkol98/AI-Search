@@ -8,6 +8,10 @@ public class UninformedSearch extends Search {
     // Initialise frontier.
     private LinkedList<Node> frontier;
 
+    public LinkedList<Node> getFrontier() {
+        return frontier;
+    }
+
     /**
      * Create an uninformed search instance - BestF and AStar algorithms.
      *
@@ -44,7 +48,7 @@ public class UninformedSearch extends Search {
             if (goalTest(currentNode.getState())) {
                 printOutput(currentNode); // print the final goal output.
             } else {
-                insertAll(expand(currentNode)); // insert to the frontier all nodes returned from the expand function.
+                insertAll(expand(currentNode, frontier, 0)); // insert to the frontier all nodes returned from the expand function.
             }
         }
     }
@@ -58,13 +62,21 @@ public class UninformedSearch extends Search {
      * @param parent     the parent node of the state.
      */
     @Override
-    public void addSuitableSuccessors(Coord state, ArrayList<Node> successors, Node parent) {
+    public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
             Node nd = new Node(parent, state);
             successors.add(nd);
         }
     }
+
+//    public void addSuitableSuccessors(LinkedList<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
+//        // if state is not contained in a node of explored or frontier.
+//        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(frontierNo).contains(state)) {
+//            Node nd = new Node(parent, state);
+//            successors.add(nd);
+//        }
+//    }
 
     /**
      * Insert a node to the frontier.
