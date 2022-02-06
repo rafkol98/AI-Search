@@ -35,13 +35,15 @@ public class InformedSearch extends Search {
      * Otherwise, it continues exploring the frontier until its empty.
      */
     @Override
-    public void loopFrontier() {
+    public void loopFrontier(Node initialNode) {
+        insert(initialNode, frontier); // Insert initial node to the frontier.
+        
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(frontier); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
-            addExplored(currentNode); // Add current node to explored.
+            addExplored(currentNode, getExplored()); // Add current node to explored.
 
             if (goalTest(currentNode.getState())) {
                 printOutput(currentNode); // print the final goal output.
@@ -49,16 +51,6 @@ public class InformedSearch extends Search {
                 insertAll(expand(currentNode, frontier, 0)); // insert to the frontier all nodes returned from the expand function.
             }
         }
-    }
-
-    /**
-     * Insert a node to the frontier.
-     *
-     * @param node the node to be added.
-     */
-    @Override
-    public void insert(Node node) {
-        frontier.add(node);
     }
 
     /**
@@ -73,7 +65,7 @@ public class InformedSearch extends Search {
     public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         Node nd = new Node(parent, state, getGoal(), getHeuristic(), getAlgo(), getStart()); //TODO: pass in heuristic
         // if state is not contained in a node of explored or frontier.
-        if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
+        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(getExplored()).contains(state)) {
             successors.add(nd);
         } else if ((getAlgo() == "AStar") && getFrontierStates(frontier).contains(state) && getNodeInFrontier(frontier, state) != null && (getNodeInFrontier(frontier, state).getPathCost(getStart()) > nd.getPathCost(getStart()))) {
             replaceNodeInFrontier(state, nd); // replace old node with the new one with the lower path cost.

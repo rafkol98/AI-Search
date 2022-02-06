@@ -8,13 +8,12 @@ import java.util.stream.Collectors;
 public class BidirectionalSearch extends UninformedSearch {
 
     // Initialise frontier.
-//    private LinkedList<Node> frontier;
     private LinkedList<Node> frontier2;
 
     private boolean intersection = false;
     private Coord intersectionCoords;
 
-    private ArrayList<Node> explored = new ArrayList<>();
+//    private ArrayList<Node> explored = new ArrayList<>();
     private ArrayList<Node> explored2 = new ArrayList<>();
 
     /**
@@ -24,12 +23,10 @@ public class BidirectionalSearch extends UninformedSearch {
      */
     public BidirectionalSearch(Map map, Coord start, Coord goal, char heuristic) {
         super(map, start, goal, heuristic);
-//        this.frontier = new LinkedList<>();
         this.frontier2 = new LinkedList<>();
     }
 
     public Node getNodeBasedOnState(ArrayList<Node> explored, Coord state) {
-
         for (Node node : explored) {
             if (node.getState().equals(state)) {
                 return node;
@@ -39,60 +36,18 @@ public class BidirectionalSearch extends UninformedSearch {
     }
 
     /**
-     * Add a node to the explored ArrayList.
-     *
-     * @param node the node to be added.
-     */
-    public void addExplored(Node node, int frontierNo) {
-        if (frontierNo == 1) {
-            explored.add(node);
-        } else {
-            explored2.add(node);
-        }
-    }
-
-    /**
-     * Print all the states currently in the frontier.
-     *
-     * @param frontier the frontier to be printed.
-     */
-    @Override
-    public void printFrontier(Collection<Node> frontier) {
-        System.out.print("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
-    }
-
-//    @Override
-//    public void treeSearch(String algo) {
-//        super.treeSearch(algo);
-//    }
-
-    /**
-     * Construct the search tree to find the goal.
-     *
-     */
-    public void treeSearch() {
-
-        Node initialNode = new Node(null, getStart()); // Create initial node.
-        Node endNode = new Node(null, getGoal()); // Create initial node.
-
-        insert(initialNode, getFrontier()); // Insert initial node to the frontier.
-        insert(endNode, frontier2);
-
-        loopFrontier();
-
-        failure(); // if path was not found -> print failure.
-    }
-
-    /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
      */
     @Override
-    public void loopFrontier() {
+    public void loopFrontier(Node initialNode) {
+        insert(initialNode, getFrontier()); // Insert initial node to the original frontier.
+        Node endNode = new Node(null, getGoal()); // Create end node.
+        insert(endNode, frontier2); // insert end node to the inverse frontier.
+
         // While the frontier is not empty, loop through it.
         while (!getFrontier().isEmpty() && !frontier2.isEmpty() && !intersection) {
             printFrontier(getFrontier()); // print frontier.
-            System.out.print(" , ");
             printFrontier(frontier2); // print frontier2.
             System.out.println();
 
@@ -100,11 +55,11 @@ public class BidirectionalSearch extends UninformedSearch {
             Node currentNode2  = removeFromFrontier(frontier2);
 
             // Add current node to explored.
-            addExplored(currentNode, 1);
-            addExplored(currentNode2, 2);
+            addExplored(currentNode, getExplored());
+            addExplored(currentNode2, explored2);
 
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
-                printGoal(getNodeBasedOnState(explored, intersectionCoords), getNodeBasedOnState(explored2, intersectionCoords)); // print the final goal output.
+                printGoal(getNodeBasedOnState(getExplored(), intersectionCoords), getNodeBasedOnState(explored2, intersectionCoords)); // print the final goal output.
             } else {
                 insertAll(expand(currentNode, getFrontier(),1), getFrontier()); // insert to the frontier all nodes returned from the expand function.
                 insertAll(expand(currentNode2, frontier2,2), frontier2);
@@ -122,8 +77,10 @@ public class BidirectionalSearch extends UninformedSearch {
      */
     @Override
     public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
+        ArrayList<Node> tempExplored = frontierNo == 1 ? getExplored() : explored2; // get appropriate explored arraylist.
+
         // if state is not contained in a node of explored or frontier.
-        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(frontierNo).contains(state)) {
+        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(tempExplored).contains(state)) {
             Node nd = new Node(parent, state);
             successors.add(nd);
         }
@@ -141,15 +98,6 @@ public class BidirectionalSearch extends UninformedSearch {
     }
 
     /**
-     * Insert a node to the frontier.
-     *
-     * @param node the node to be added.
-     */
-    public void insert(Node node, Collection<Node> frontier) {
-        frontier.add(node); // add node.
-    }
-
-    /**
      * Removes the first element of the frontier (the one with the lowest F_Cost currently in the frontier).
      *
      * @return the node removed.
@@ -158,28 +106,6 @@ public class BidirectionalSearch extends UninformedSearch {
         return frontier.poll();
     }
 
-    /**
-     * Get states of nodes that are included in the explored list.
-     *
-     * @return the states of the nodes explored.
-     */
-    public ArrayList<Coord> getExploredStates(int frontierNo) {
-        ArrayList<Coord> exploredStates = new ArrayList<>();
-
-        // Iterate through the nodes of the explored (depending on frontier no.), add state of all the nodes to
-        // the exploredStates ArrayList.
-        if (frontierNo == 1) {
-            for (Node node : explored) {
-                exploredStates.add(node.getState());
-            }
-        } else {
-            for (Node node : explored2) {
-                exploredStates.add(node.getState());
-            }
-        }
-
-        return exploredStates;
-    }
 
     /**
      * Check if the state was explored by both sub-searches.
@@ -188,7 +114,7 @@ public class BidirectionalSearch extends UninformedSearch {
      * @return true if explored by both, false otherwise.
      */
     public boolean intersect(Coord state) {
-        if (getExploredStates(1).contains(state) && getExploredStates(2).contains(state)) {
+        if (getExploredStates(getExplored()).contains(state) && getExploredStates(explored2).contains(state)) {
             intersectionCoords = state; // store intersected state's coord.
             return true;
         }
@@ -212,11 +138,10 @@ public class BidirectionalSearch extends UninformedSearch {
             System.out.print(pathStates2.pop());
         }
         System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
-        System.out.println(explored.size() + " , " + explored2.size());
+        System.out.println(getExplored().size() + " , " + explored2.size());
 
         System.exit(0); // Exit system.
     }
-
 
     // Recursive function to insert an item at the bottom of a given stack
     public static void insertAtBottom(Stack<Coord> s, Coord state)

@@ -37,13 +37,15 @@ public class UninformedSearch extends Search {
      * Otherwise, it continues exploring the frontier until its empty.
      */
     @Override
-    public void loopFrontier() {
+    public void loopFrontier(Node initialNode) {
+        insert(initialNode, frontier); // Insert initial node to the frontier.
+
         // While the frontier is not empty, loop through it.
         while (!frontier.isEmpty()) {
             printFrontier(frontier); // print frontier.
 
             Node currentNode = removeFromFrontier(); // Remove first node from frontier.
-            addExplored(currentNode); // Add current node to explored.
+            addExplored(currentNode, getExplored()); // Add current node to explored.
 
             if (goalTest(currentNode.getState())) {
                 printOutput(currentNode); // print the final goal output.
@@ -64,28 +66,12 @@ public class UninformedSearch extends Search {
     @Override
     public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
         // if state is not contained in a node of explored or frontier.
-        if (!getFrontierStates(frontier).contains(state) && !getExploredStates().contains(state)) {
+        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(getExplored()).contains(state)) {
             Node nd = new Node(parent, state);
             successors.add(nd);
         }
     }
 
-//    public void addSuitableSuccessors(LinkedList<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
-//        // if state is not contained in a node of explored or frontier.
-//        if (!getFrontierStates(frontier).contains(state) && !getExploredStates(frontierNo).contains(state)) {
-//            Node nd = new Node(parent, state);
-//            successors.add(nd);
-//        }
-//    }
-
-    /**
-     * Insert a node to the frontier.
-     *
-     * @param node the node to be added.
-     */
-    public void insert(Node node) {
-        frontier.add(node); // Add node.
-    }
 
     /**
      * Inserts all the successors to the frontier.

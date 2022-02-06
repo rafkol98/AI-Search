@@ -64,7 +64,7 @@ public class A1main {
                 informed.treeSearch("AStar");
                 break;
             case "Bidirectional": //run AStar
-                bidirectional.treeSearch();
+                bidirectional.treeSearch("Bidirectional");
                 break;
         }
 

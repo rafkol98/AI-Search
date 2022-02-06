@@ -114,7 +114,7 @@ public abstract class Search {
      *
      * @param node the node to be added.
      */
-    public void addExplored(Node node) {
+    public void addExplored(Node node, ArrayList<Node> explored) {
         explored.add(node);
     }
 
@@ -140,9 +140,7 @@ public abstract class Search {
             initialNode = new Node(null, start);
         }
 
-        insert(initialNode); // Insert initial node to the frontier.
-
-        loopFrontier();
+        loopFrontier(initialNode);
 
         failure(); // if path was not found -> print failure.
     }
@@ -150,8 +148,10 @@ public abstract class Search {
     /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
+     *
+     * @param initialNode the initial node to be added before constructing the search tree.
      */
-    public abstract void loopFrontier();
+    public abstract void loopFrontier(Node initialNode);
 
     /**
      * Expand a node by finding its suitable successors (next possible moves).
@@ -159,19 +159,6 @@ public abstract class Search {
      * @param node the node to be expanded.
      * @return an ArrayList containing all the legal and available successors of the node passed in.
      */
-//    public ArrayList<Node> expand(Node node) {
-//
-//        ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
-//
-//        ArrayList<Node> successors = new ArrayList<>(); // ArrayList to hold the successor nodes.
-//
-//        // Iterate through the next states.
-//        for (Coord state : nextStates) {
-//            addSuitableSuccessors(state, successors, node);
-//        }
-//        return successors;
-//    }
-
     public ArrayList<Node> expand(Node node, Collection<Node> frontier, int frontierNo) {
 
         ArrayList<Coord> nextStates = successor(node.getState()); // Assign all the next legal states to an ArrayList.
@@ -180,7 +167,7 @@ public abstract class Search {
 
         // Iterate through the next states.
         for (Coord state : nextStates) {
-            addSuitableSuccessors(frontier, frontierNo,state, successors, node);
+            addSuitableSuccessors(frontier, frontierNo, state, successors, node);
         }
         return successors;
     }
@@ -207,8 +194,11 @@ public abstract class Search {
      * Insert a node to the frontier.
      *
      * @param node the node to be added.
+     * @param frontier the frontier to add the node to.
      */
-    public abstract void insert(Node node);
+    public void insert(Node node, Collection<Node> frontier) {
+        frontier.add(node); // Add node.
+    }
 
     /**
      * Removes the first element of the frontier (the one with the lowest F_Cost currently in the frontier).
@@ -222,7 +212,7 @@ public abstract class Search {
      *
      * @return the states of the nodes explored.
      */
-    public ArrayList<Coord> getExploredStates() {
+    public ArrayList<Coord> getExploredStates(ArrayList<Node> explored) {
         ArrayList<Coord> exploredStates = new ArrayList<>();
 
         explored.stream().forEach(node -> exploredStates.add(node.getState()));
