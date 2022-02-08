@@ -1,5 +1,11 @@
 import java.util.Stack;
 
+
+/**
+ * Creates a node in the search tree.
+ *
+ * @author 210017984.
+ */
 public class Node {
 
     // Initialise Node variables.

@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 /**
- *
+ * The Bidirectional class extends UninformedSearch. This is because it has some unique characteristics
+ * when compared to other UninformedSearch algorithms such as two frontiers, two explored lists, and two
+ * simultaneous searches.
  *
  * @author 210017984.
  */
@@ -60,7 +62,7 @@ public class BidirectionalSearch extends UninformedSearch {
 
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
                 // Get node of the intersection coordinates from each explored list (explored & explored2).
-                printGoal(getNodeInExplored(getExplored(), intersectionCoords), getNodeInExplored(explored2, intersectionCoords)); // print the final goal output.
+                printOutput(getNodeInExplored(getExplored(), intersectionCoords), getNodeInExplored(explored2, intersectionCoords)); // print the final goal output.
             } else {
                 // insert to the frontier all nodes returned from the expand function.
                 insertAll(expand(currentNode, getFrontier(),1), getFrontier());
@@ -135,7 +137,7 @@ public class BidirectionalSearch extends UninformedSearch {
      * @param node1 the common node found from the first sub-tree.
      * @param node2 the common node found from the second sub-tree.
      */
-    public void printGoal(Node node1, Node node2) {
+    public void printOutput(Node node1, Node node2) {
         Stack<Coord> pathStates = node1.getPath(getStart());
         Stack<Coord> pathStates2 = node2.getPath(getGoal());
         reverse(pathStates2);
@@ -160,7 +162,7 @@ public class BidirectionalSearch extends UninformedSearch {
      * @param stack the stack to insert states at the bottom to.
      * @param state the state to be added.
      */
-    public static void insertAtBottom(Stack<Coord> stack, Coord state)
+    private static void insertAtBottom(Stack<Coord> stack, Coord state)
     {
         if (stack.empty())
         {
@@ -178,7 +180,7 @@ public class BidirectionalSearch extends UninformedSearch {
      *
      * @param stack the stack to be reversed.
      */
-    public static void reverse(Stack<Coord> stack)
+    private static void reverse(Stack<Coord> stack)
     {
         // if stack is empty, then the stack was reversed.
         if (stack.empty()) {
