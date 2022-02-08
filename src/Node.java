@@ -75,8 +75,6 @@ public class Node {
      * @return the cost of the path.
      */
     public float getPathCost(Coord start) {
-        //TODO: maybe need to add +1 for the cost from previous state to current.
-        //TODO : maybe need to -1 to remove the initial node from the cost.
         return getPath(start).size() - 1;
     }
 
@@ -120,6 +118,7 @@ public class Node {
             case "BestF":
                 return getH_Cost();
             case "AStar":
+                // AStar combines heuristic cost with path cost.
                 return getH_Cost() + getPathCost(start);
         }
         return 0;
@@ -164,20 +163,16 @@ public class Node {
      * @return manhattan distance.
      */
     private double heuristicScore(char heuristic) {
-        //TODO: maybe reverse their oder of subtraction.
-        int deltaX = getState().getR() - goal.getR();
-        int deltaY = getState().getC() - goal.getC();
+        int deltaX = goal.getR() - getState().getR();
+        int deltaY = goal.getC() - getState().getC();
 
         switch (heuristic) {
-            // Manhattan distance (Cartesian Coordinates).
             case 'M':
-                return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance.
+                return Math.abs(deltaX) + Math.abs(deltaY); // return manhattan distance (Cartesian Coordinates).
             case 'T':
-                return manhattanTriangle(); // return manhattan distance.
-            // Euclidian distance.
+                return manhattanTriangle(); // return manhattan distance (Triangle Grid).
             case 'E':
                 return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2)); // return Euclidian distance.
-            // Chebyshev distance.
             case 'C':
                 return Math.max(Math.abs(deltaX), Math.abs(deltaY)); // return Chebyshev distance.
 
@@ -185,19 +180,23 @@ public class Node {
         return 0;
     }
 
+    /**
+     * Compute the manhattan distance using the triangle grid method.
+     *
+     * @return the manhattan distance using the triangle grid method.
+     */
     private double manhattanTriangle() {
         double a = -state.getR();
-        double b = (state.getR() + state.getC() - state.getTriangleDirection())/2;
-        double c = (state.getR() + state.getC() - state.getTriangleDirection())/2 - state.getR() + state.getTriangleDirection();
+        double b = (state.getR() + state.getC() - state.getTriangleDirection()) / 2;
+        double c = (state.getR() + state.getC() - state.getTriangleDirection()) / 2 - state.getR() + state.getTriangleDirection();
 
         double aG = -goal.getR();
-        double bG = (goal.getR() + goal.getC() - goal.getTriangleDirection())/2;
-        double cG = (goal.getR() + goal.getC() - goal.getTriangleDirection())/2 - goal.getR() + goal.getTriangleDirection();
+        double bG = (goal.getR() + goal.getC() - goal.getTriangleDirection()) / 2;
+        double cG = (goal.getR() + goal.getC() - goal.getTriangleDirection()) / 2 - goal.getR() + goal.getTriangleDirection();
 
         return Math.abs(a - aG) + Math.abs(b - bG) + Math.abs(c - cG);
 
     }
-
 
 
 }

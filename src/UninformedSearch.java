@@ -3,11 +3,21 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+/**
+ * The UninformedSearch class implementing the functionalities for both BFS and DFS.
+ *
+ * @author 210017984.
+ */
 public class UninformedSearch extends Search {
 
     // Initialise frontier.
     private LinkedList<Node> frontier;
 
+    /**
+     * Get the frontier. Used from the bidirectional class.
+     *
+     * @return the frontier.
+     */
     public LinkedList<Node> getFrontier() {
         return frontier;
     }
@@ -18,6 +28,7 @@ public class UninformedSearch extends Search {
      * @param map   the map passed in.
      * @param start the starting coordinates.
      * @param goal  the goal coordinates.
+     * @param heuristic the chosen heuristic.
      */
     public UninformedSearch(Map map, Coord start, Coord goal, char heuristic) {
         super(map, start, goal, heuristic);
@@ -26,6 +37,8 @@ public class UninformedSearch extends Search {
 
     /**
      * Print all the states currently in the frontier.
+     *
+     * @param frontier the frontier to print.
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
@@ -35,6 +48,8 @@ public class UninformedSearch extends Search {
     /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
      * Otherwise, it continues exploring the frontier until its empty.
+     *
+     * @param initialNode the initial node to be added before constructing the search tree.
      */
     @Override
     public void loopFrontier(Node initialNode) {
@@ -59,6 +74,9 @@ public class UninformedSearch extends Search {
      * Ensures that the state being explored is not contained already in the frontier or was previously explored.
      * If it is not, then it is added to the successors ArrayList passed in.
      *
+     * @param frontier   the frontier to make the check if node is contained already.
+     * @param frontierNo the number of frontier. Used for BIDIRECTIONAL to get the states of the appropriate frontier,
+     *                   as it uses 2 different frontiers.
      * @param state      the state being explored.
      * @param successors the successors ArrayList - where we store all the suitable successors.
      * @param parent     the parent node of the state.

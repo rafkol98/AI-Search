@@ -16,10 +16,14 @@ public abstract class Search {
     private String algo;
     private char heuristic;
 
+
     /**
-     * @param map
-     * @param start
-     * @param goal
+     * Create a new Search.
+     *
+     * @param map       the map in the selected configuration.
+     * @param start     the starting coordinates.
+     * @param goal      the goal coordinates.
+     * @param heuristic the chosen heuristic.
      */
     public Search(Map map, Coord start, Coord goal, char heuristic) {
         this.map = map.getMap();
@@ -57,6 +61,8 @@ public abstract class Search {
 
     /**
      * Set algorithm selected by the user.
+     *
+     * @param algo the algorithm selected.
      */
     public void setAlgo(String algo) {
         this.algo = algo;
@@ -64,6 +70,7 @@ public abstract class Search {
 
     /**
      * Get heuristic selected by the user.
+     *
      * @return heuristic selected.
      */
     public char getHeuristic() {
@@ -71,8 +78,10 @@ public abstract class Search {
     }
 
     /**
-     * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList.
+     * Iterate through the nodes of the frontier, add the state of each node to the frontierStates ArrayList
+     * and then return it.
      *
+     * @param frontier the frontier that we want to get its states.
      * @return an ArrayList containing all the states of the frontier.
      */
     public ArrayList<Coord> getFrontierStates(Collection<Node> frontier) {
@@ -88,11 +97,27 @@ public abstract class Search {
      * Get a node that has the same state as the one passed in and is included in the frontier.
      *
      * @param frontier the frontier to be iterated.
-     * @param state the state that we are looking.
+     * @param state    the state that we are looking.
      * @return the node that is included in the frontier.
      */
     public Node getNodeInFrontier(Collection<Node> frontier, Coord state) {
         for (Node node : frontier) {
+            if (node.getState().equals(state)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get a node from an explored ArrayList that has the same state as the one passed in.
+     *
+     * @param explored the explored to be iterated.
+     * @param state the state that we are looking.
+     * @return the node that is included in the explored ArrayList.
+     */
+    public Node getNodeInExplored(ArrayList<Node> explored, Coord state) {
+        for (Node node : explored) {
             if (node.getState().equals(state)) {
                 return node;
             }
@@ -110,9 +135,10 @@ public abstract class Search {
     }
 
     /**
-     * Add a node to the explored ArrayList.
+     * Add a node to the explored ArrayList passed in.
      *
-     * @param node the node to be added.
+     * @param node     the node to be added.
+     * @param explored the explored arraylist to add a node to.
      */
     public void addExplored(Node node, ArrayList<Node> explored) {
         explored.add(node);
@@ -121,6 +147,7 @@ public abstract class Search {
     /**
      * Print all the states currently in the frontier.
      *
+     * @param frontier the frontier to print.
      */
     public abstract void printFrontier(Collection<Node> frontier);
 
@@ -156,7 +183,10 @@ public abstract class Search {
     /**
      * Expand a node by finding its suitable successors (next possible moves).
      *
-     * @param node the node to be expanded.
+     * @param node       the node to be expanded.
+     * @param frontier   the frontier to be passed in the addSuitableSuccessors to check that a state was not already
+     *                   explored or in the frontier.
+     * @param frontierNo the number of frontier. Used for BIDIRECTIONAL because it uses 2 frontiers.
      * @return an ArrayList containing all the legal and available successors of the node passed in.
      */
     public ArrayList<Node> expand(Node node, Collection<Node> frontier, int frontierNo) {
@@ -176,6 +206,9 @@ public abstract class Search {
      * Ensures that the state being explored is not contained already in the frontier or was previously explored.
      * If it is not, then it is added to the successors ArrayList passed in.
      *
+     * @param frontier   the frontier to make the check if node is contained already.
+     * @param frontierNo the number of frontier. Used for BIDIRECTIONAL to get the states of the appropriate frontier,
+     *                   as it uses 2 different frontiers.
      * @param state      the state being explored.
      * @param successors the successors ArrayList - where we store all the suitable successors.
      * @param parent     the parent node of the state.
@@ -193,7 +226,7 @@ public abstract class Search {
     /**
      * Insert a node to the frontier.
      *
-     * @param node the node to be added.
+     * @param node     the node to be added.
      * @param frontier the frontier to add the node to.
      */
     public void insert(Node node, Collection<Node> frontier) {
@@ -210,6 +243,7 @@ public abstract class Search {
     /**
      * Get states of nodes that are included in the explored list.
      *
+     * @param explored the arrayList that contains the explored states to be iterated.
      * @return the states of the nodes explored.
      */
     public ArrayList<Coord> getExploredStates(ArrayList<Node> explored) {
@@ -234,8 +268,8 @@ public abstract class Search {
      * Find the next possible moves for the state passed in. Add the successor states in a List according to the tie
      * breaking constraints specified.
      *
-     * @param state
-     * @return
+     * @param state the state checked.
+     * @return an ArrayList containing the next possible moves/states.
      */
     public ArrayList<Coord> successor(Coord state) {
         int downwards = state.getTriangleDirection(); // get if triangle direction is downwards.
@@ -284,8 +318,8 @@ public abstract class Search {
      * or equal than the map's row and column boundaries.
      * It finally checks that the state is not an island i.e. has a value of 1 on the map.
      *
-     * @param states
-     * @return
+     * @param states the states passed in from the successor function.
+     * @return only the legal states from those passed in.
      */
     public ArrayList<Coord> keepOnlyLegalStates(ArrayList<Coord> states) {
 
@@ -301,7 +335,7 @@ public abstract class Search {
             int columns = map[0].length - 1;
 
             // Check that the current state is legal.
-            if ((row >= 0 && col >= 0) && (row <= rows && col <= columns) && (map[row][col] != 1)) {
+            if ((row >= 0 && col >= 0) && (row <= rows && col <= columns) && (map[row][col] != 1) && (map[row][col] != 2)) {
                 legalStates.add(state); // add state to the legal states ArrayList.
             }
         }
@@ -312,7 +346,7 @@ public abstract class Search {
     /**
      * Print final output (when goal node is reached).
      *
-     * @param node
+     * @param node the node from which we get the path to the start.
      */
     public void printOutput(Node node) {
         Stack<Coord> pathStates = node.getPath(start);
@@ -326,6 +360,7 @@ public abstract class Search {
 
         System.exit(0); // Exit system.
     }
+
     /**
      * If the search could not find a solution, print fail message, the explored size, and then exit the system.
      */
