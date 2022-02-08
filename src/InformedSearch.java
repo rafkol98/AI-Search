@@ -34,7 +34,7 @@ public class InformedSearch extends Search {
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
-        DecimalFormat df = new DecimalFormat("0.00"); // Get cost in 2 decimal places.
+        DecimalFormat df = new DecimalFormat("0.0"); // Get cost in 2 decimal places.
         System.out.println("[" + frontier.stream().map(n -> n.getState().toString() + ":" + df.format(n.getF_Cost())).collect(Collectors.joining(",")) + "]");
     }
 

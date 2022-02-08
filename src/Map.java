@@ -100,6 +100,22 @@ public enum Map {
         map[row][col] = 2;
     }
 
+    public int countIslands() {
+        int rows = map.length;
+        int columns = map[0].length;
+
+        int count = 0;
+        for(int r=0; r< rows; r++) {
+            for (int c=0; c<columns; c++) {
+                if (map[r][c]==1) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
     public int[][] getMap() {
         return map;
     }

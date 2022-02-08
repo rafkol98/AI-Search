@@ -200,7 +200,7 @@ public class Node {
         double bG = (goal.getR() + goal.getC() - goal.getTriangleDirection()) / 2;
         double cG = (goal.getR() + goal.getC() - goal.getTriangleDirection()) / 2 - goal.getR() + goal.getTriangleDirection();
 
-        return Math.abs(a - aG) + Math.abs(b - bG) + Math.abs(c - cG);
+        return Math.abs(aG - a) + Math.abs(bG - b) + Math.abs(cG - c);
 
     }
 

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /********************Starter Code
@@ -28,18 +29,21 @@ public class A1main {
                 heuristic = args[2];
 
                 if (args.length == 4 && args[3].charAt(0) == 'Y') {
-                    generateHighTides(map, conf.getS(), conf.getG()); // change map.
+                    generateHighTides(map, conf.getS(), conf.getG(), 5); // change map.
+                } else {
+                    System.out.println("To generate waves please type Y as the fourth argument e.g.: java A1main <Alg> <Conf> <H> Y");
+                    System.exit(-1);
                 }
             } else {
                 heuristic = "M";
             }
 
             if (heuristic.charAt(0) == 'M' || heuristic.charAt(0) == 'E' || heuristic.charAt(0) == 'C' || heuristic.charAt(0) == 'T') {
-                printMap(map, conf.getS(), conf.getG()); // TODO dont print-> have a flag for it.
-                //run your search algorithm
+                printMap(map, conf.getS(), conf.getG());
+                // Run search algorithm.
                 runSearch(args[0], map, conf.getS(), conf.getG(), heuristic.charAt(0));
             } else {
-                System.out.println("Accepted heuristics: M, E, C");
+                System.out.println("Accepted heuristics: M, T, E, C");
                 System.exit(-1);
             }
 
@@ -48,7 +52,7 @@ public class A1main {
             e.printStackTrace();
 
             System.out.println("There was a problem. Please run the program like this java A1main BFS JCONF03 M");
-        }            //TODO: fix the instructions.
+        }
 
 
     }
@@ -160,24 +164,26 @@ public class A1main {
      * @param goal goal coordinates.
      * @return the updated map.
      */
-    private static Map generateHighTides(Map m, Coord init, Coord goal) {
+    private static Map generateHighTides(Map m, Coord init, Coord goal, int numberOfTides) {
         // Get rows and columns of the map.
         int rows = m.getMap().length;
-        int columns = m.getMap().length;
+        int columns = m.getMap()[0].length;
 
-        // Iterate throigh map's coodinates.
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < columns; c++) {
-                if (!isCoord(init, r, c) && !isCoord(goal, r, c)) {
-                    //ASSUMPTION: THERE IS A 1/5 CHANCE THAT THERE IS A HIGH TIDE.
-                    boolean highTide = new Random().nextInt(5) == 1; // check if random value created is 1 (1/5 chance).
+        int tidesAssigned = 0;
+        if (numberOfTides < ((rows * columns)-m.countIslands())) {
+           while(tidesAssigned < numberOfTides) {
+                int randomRow = new Random().nextInt(rows-1);
+                int randomColumn = new Random().nextInt(columns-1);
 
-                    // set a tide to the specific row & col on the map.
-                    if (highTide) {
-                        m.setTide(r, c);
-                    }
+               System.out.println("here "+randomRow +" , "+randomColumn);
+                if (m.getMap()[randomRow][randomColumn] != 1 && m.getMap()[randomRow][randomColumn] != 2 && !isCoord(init, randomRow, randomColumn) && !isCoord(goal,randomRow, randomColumn)) {
+                    m.setTide(randomRow, randomColumn);
+                    tidesAssigned++;
                 }
             }
+        } else {
+            System.out.println("Please select smaller number of tides, between 0 and "+((rows * columns)-m.countIslands()));
+            System.exit(0);
         }
 
         return m;
