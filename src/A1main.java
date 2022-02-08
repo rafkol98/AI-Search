@@ -28,11 +28,17 @@ public class A1main {
             if (args.length >= 3) {
                 heuristic = args[2];
 
-                if (args.length == 4 && args[3].charAt(0) == 'Y') {
-                    generateHighTides(map, conf.getS(), conf.getG(), 5); // change map.
-                } else {
-                    System.out.println("To generate waves please type Y as the fourth argument e.g.: java A1main <Alg> <Conf> <H> Y");
-                    System.exit(-1);
+                if (args.length == 4) {
+                    try {
+                        int numTides = Integer.parseInt(args[3]);
+                        map = generateHighTides(map, conf.getS(), conf.getG(), numTides); // change map.
+                        TestingTides testingTides = new TestingTides(map, conf.getS(), conf.getG(), 'M');
+                        testingTides.runAlgorithms();
+                        System.exit(0);
+
+                    } catch (NumberFormatException nfe) {
+                        System.out.println("Please enter a valid number for number of tides. E.g. for 5 tides: java A1main <Alg> <Conf> <H> 5");
+                    }
                 }
             } else {
                 heuristic = "M";
@@ -58,9 +64,9 @@ public class A1main {
     }
 
     private static void runSearch(String algo, Map map, Coord start, Coord goal, char heuristic) {
-        Search uninformed = new UninformedSearch(map, start, goal, heuristic);
+        Search uninformed = new UninformedSearch(map, start, goal);
         Search informed = new InformedSearch(map, start, goal, heuristic);
-        BidirectionalSearch bidirectional = new BidirectionalSearch(map, start, goal, heuristic);
+        BidirectionalSearch bidirectional = new BidirectionalSearch(map, start, goal);
 
         switch (algo) {
             case "BFS": //run BFS
@@ -79,11 +85,12 @@ public class A1main {
                 bidirectional.treeSearch("Bidirectional");
                 break;
         }
+        System.exit(0);
 
     }
 
 
-    private static void printMap(Map m, Coord init, Coord goal) {
+    public static void printMap(Map m, Coord init, Coord goal) {
 
         int[][] map = m.getMap();
 
@@ -175,14 +182,13 @@ public class A1main {
                 int randomRow = new Random().nextInt(rows-1);
                 int randomColumn = new Random().nextInt(columns-1);
 
-               System.out.println("here "+randomRow +" , "+randomColumn);
                 if (m.getMap()[randomRow][randomColumn] != 1 && m.getMap()[randomRow][randomColumn] != 2 && !isCoord(init, randomRow, randomColumn) && !isCoord(goal,randomRow, randomColumn)) {
                     m.setTide(randomRow, randomColumn);
                     tidesAssigned++;
                 }
             }
         } else {
-            System.out.println("Please select smaller number of tides, between 0 and "+((rows * columns)-m.countIslands()));
+            System.out.println("Please select smaller number of tides, between 0 and "+ ((rows * columns)-m.countIslands()-2));
             System.exit(0);
         }
 

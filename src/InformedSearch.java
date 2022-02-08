@@ -56,7 +56,9 @@ public class InformedSearch extends Search {
             addExplored(currentNode, getExplored()); // Add current node to explored.
 
             if (goalTest(currentNode.getState())) {
+                setFoundSolution(true);
                 printOutput(currentNode); // print the final goal output.
+                break;
             } else {
                 insertAll(expand(currentNode, frontier, 0)); // insert to the frontier all nodes returned from the expand function.
             }

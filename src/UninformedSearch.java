@@ -28,10 +28,9 @@ public class UninformedSearch extends Search {
      * @param map   the map passed in.
      * @param start the starting coordinates.
      * @param goal  the goal coordinates.
-     * @param heuristic the chosen heuristic.
      */
-    public UninformedSearch(Map map, Coord start, Coord goal, char heuristic) {
-        super(map, start, goal, heuristic);
+    public UninformedSearch(Map map, Coord start, Coord goal) {
+        super(map, start, goal);
         this.frontier = new LinkedList<>();
     }
 
@@ -63,7 +62,9 @@ public class UninformedSearch extends Search {
             addExplored(currentNode, getExplored()); // Add current node to explored.
 
             if (goalTest(currentNode.getState())) {
+                setFoundSolution(true);
                 printOutput(currentNode); // print the final goal output.
+                break;
             } else {
                 insertAll(expand(currentNode, frontier, 0)); // insert to the frontier all nodes returned from the expand function.
             }

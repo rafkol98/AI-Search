@@ -15,7 +15,14 @@ public abstract class Search {
     private ArrayList<Node> explored = new ArrayList<>();
     private String algo;
     private char heuristic;
+    private boolean foundSolution = false;
 
+
+    public Search(Map map, Coord start, Coord goal) {
+        this.map = map.getMap();
+        this.start = start;
+        this.goal = goal;
+    }
 
     /**
      * Create a new Search.
@@ -31,6 +38,15 @@ public abstract class Search {
         this.goal = goal;
         this.heuristic = heuristic;
     }
+
+    /**
+     * Set it to true once a solution is found.
+     * @param foundSolution true if a solution is found, false otherwise.
+     */
+    public void setFoundSolution(boolean foundSolution) {
+        this.foundSolution = foundSolution;
+    }
+
 
     /**
      * Get coordinates of the starting position.
@@ -169,7 +185,11 @@ public abstract class Search {
 
         loopFrontier(initialNode);
 
-        failure(); // if path was not found -> print failure.
+        // if solution was not found -> print failure.
+        if (!foundSolution) {
+            failure();
+        }
+
     }
 
     /**
@@ -357,8 +377,7 @@ public abstract class Search {
         }
         System.out.println("\n" + node.getPathCost(start)); // Print path cost.
         System.out.println(getExplored().size()); // Print nodes explored.
-
-        System.exit(0); // Exit system.
+//        System.exit(0); // Exit system.
     }
 
     /**
@@ -367,7 +386,7 @@ public abstract class Search {
     public void failure() {
         System.out.println("fail");
         System.out.println(getExplored().size());
-        System.exit(0); // Exit system.
+//        System.exit(0); // Exit system.
     }
 
 }

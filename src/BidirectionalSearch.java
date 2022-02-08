@@ -27,10 +27,9 @@ public class BidirectionalSearch extends UninformedSearch {
      * @param map   the map passed in.
      * @param start the starting coordinates.
      * @param goal  the goal coordinates.
-     * @param heuristic the chosen heuristic.
      */
-    public BidirectionalSearch(Map map, Coord start, Coord goal, char heuristic) {
-        super(map, start, goal, heuristic);
+    public BidirectionalSearch(Map map, Coord start, Coord goal) {
+        super(map, start, goal);
         this.frontier2 = new LinkedList<>();
     }
 
@@ -62,7 +61,9 @@ public class BidirectionalSearch extends UninformedSearch {
 
             if (intersect(currentNode.getState()) || intersect(currentNode2.getState())) {
                 // Get node of the intersection coordinates from each explored list (explored & explored2).
+                setFoundSolution(true);
                 printOutput(getNodeInExplored(getExplored(), intersectionCoords), getNodeInExplored(explored2, intersectionCoords)); // print the final goal output.
+                break;
             } else {
                 // insert to the frontier all nodes returned from the expand function.
                 insertAll(expand(currentNode, getFrontier(),1), getFrontier());
@@ -151,8 +152,6 @@ public class BidirectionalSearch extends UninformedSearch {
         }
         System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
         System.out.println(getExplored().size() + " , " + explored2.size());
-
-        System.exit(0); // Exit system.
     }
 
 
