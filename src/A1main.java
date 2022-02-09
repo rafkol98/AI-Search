@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Random;
-
 /********************Starter Code
  *
  * This class contains some examples on how to handle the required inputs and outputs
@@ -31,8 +28,8 @@ public class A1main {
                 if (args.length == 4) {
                     try {
                         int numTides = Integer.parseInt(args[3]);
-                        TestingTides testingTides = new TestingTides(map, conf.getS(), conf.getG(), 'M');
-                        testingTides.runAlgorithms(numTides);
+                        HighTides highTides = new HighTides(map, conf.getS(), conf.getG(), 'M');
+                        highTides.runAlgorithms(numTides);
                         System.exit(0);
 
                     } catch (NumberFormatException nfe) {

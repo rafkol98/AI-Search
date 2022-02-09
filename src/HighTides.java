@@ -1,13 +1,13 @@
 import java.util.Random;
 
-public class TestingTides {
+public class HighTides {
 
     Map map;
     Coord start;
     Coord goal;
     char heuristic;
 
-    public TestingTides(Map map, Coord start, Coord goal, char heuristic) {
+    public HighTides(Map map, Coord start, Coord goal, char heuristic) {
         this.map = map;
         this.start = start;
         this.goal = goal;
@@ -20,9 +20,9 @@ public class TestingTides {
      */
     public void runAlgorithms(int maxTides) {
         Map tempMap = map;
-        int tides = 0;
+        int tides = 1;
         while(tides <= maxTides) {
-            tempMap = generateHighTides(tempMap,2);
+            tempMap = generateHighTides(tempMap,1);
 
             System.out.println("TIDES: "+tides);
             System.out.println("MAP:");
@@ -66,11 +66,12 @@ public class TestingTides {
         int columns = map.getMap()[0].length;
 
         int tidesAssigned = 0;
+        // if the number of tides is less than the grid area minus the islands, then add tides.
         if (numberOfTides < ((rows * columns)-map.countIslands())) {
             while(tidesAssigned < numberOfTides) {
                 int randomRow = new Random().nextInt(rows-1);
                 int randomColumn = new Random().nextInt(columns-1);
-
+                // Set a tide to a free cell.
                 if (map.getMap()[randomRow][randomColumn] != 1 && map.getMap()[randomRow][randomColumn] != 2 && !A1main.isCoord(start, randomRow, randomColumn) && !A1main.isCoord(goal,randomRow, randomColumn)) {
                     map.setTide(randomRow, randomColumn);
                     tidesAssigned++;

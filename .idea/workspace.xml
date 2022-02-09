@@ -5,16 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/A1main.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/A1main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/A1main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/A1main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BidirectionalSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/BidirectionalSearch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BidirectionalSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BidirectionalSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InformedSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/InformedSearch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InformedSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/InformedSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Search.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Search.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Search.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestingTides.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestingTides.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TestingTides.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TestingTides.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UninformedSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/UninformedSearch.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/UninformedSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/UninformedSearch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestingTides.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/HighTides.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TestingTides.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HighTides.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
