@@ -41,7 +41,7 @@ public class A1main {
             }
 
             if (heuristic.charAt(0) == 'M' || heuristic.charAt(0) == 'E' || heuristic.charAt(0) == 'C' || heuristic.charAt(0) == 'T') {
-                printMap(map, conf.getS(), conf.getG());
+//                printMap(map, conf.getS(), conf.getG());
                 // Run search algorithm.
                 runSearch(args[0], map, conf.getS(), conf.getG(), heuristic.charAt(0));
             } else {

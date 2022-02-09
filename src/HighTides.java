@@ -1,5 +1,10 @@
 import java.util.Random;
 
+/**
+ * High tides class is used to test how incrementally adding tides affects the performance of the algorithms.
+ *
+ * @author 210017984.
+ */
 public class HighTides {
 
     Map map;

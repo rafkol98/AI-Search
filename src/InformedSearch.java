@@ -80,7 +80,7 @@ public class InformedSearch extends Search {
      */
     @Override
     public void addSuitableSuccessors(Collection<Node> frontier, int frontierNo, Coord state, ArrayList<Node> successors, Node parent) {
-        Node nd = new Node(parent, state, getGoal(), getHeuristic(), getAlgo(), getStart()); //TODO: pass in heuristic
+        Node nd = new Node(parent, state, getGoal(), getHeuristic(), getAlgo(), getStart());
         // if state is not contained in a node of explored or frontier.
         if (!getFrontierStates(frontier).contains(state) && !getExploredStates(getExplored()).contains(state)) {
             successors.add(nd);
