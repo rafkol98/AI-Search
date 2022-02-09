@@ -14,15 +14,6 @@ public class UninformedSearch extends Search {
     private LinkedList<Node> frontier;
 
     /**
-     * Get the frontier. Used from the bidirectional class.
-     *
-     * @return the frontier.
-     */
-    public LinkedList<Node> getFrontier() {
-        return frontier;
-    }
-
-    /**
      * Create an uninformed search instance - BestF and AStar algorithms.
      *
      * @param map   the map passed in.
@@ -35,13 +26,24 @@ public class UninformedSearch extends Search {
     }
 
     /**
+     * Get the frontier. Used from the bidirectional class.
+     *
+     * @return the frontier.
+     */
+    public LinkedList<Node> getFrontier() {
+        return frontier;
+    }
+
+    /**
      * Print all the states currently in the frontier.
      *
      * @param frontier the frontier to print.
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
-        System.out.println("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
+        if (isPrint()) {
+            System.out.println("[" + frontier.stream().map(n -> n.getState().toString()).collect(Collectors.joining(",")) + "]");
+        }
     }
 
     /**

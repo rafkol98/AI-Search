@@ -17,6 +17,11 @@ public abstract class Search {
     private char heuristic;
     private boolean foundSolution = false;
 
+    // Variables used for the testing tides class.
+    public int nodesExplored = 0;
+    public float pathCost = 0;
+    boolean print;
+
 
     public Search(Map map, Coord start, Coord goal) {
         this.map = map.getMap();
@@ -47,6 +52,22 @@ public abstract class Search {
         this.foundSolution = foundSolution;
     }
 
+    /**
+     * Set whether the output should be printed. Its only not printed when called from the
+     * TestingTides class which was created just for evaluation.
+     * @param print
+     */
+    public void setPrint(boolean print) {
+        this.print = print;
+    }
+
+    /**
+     * Get whether the print flag is true or false.
+     * @return
+     */
+    public boolean isPrint() {
+        return print;
+    }
 
     /**
      * Get coordinates of the starting position.
@@ -172,8 +193,10 @@ public abstract class Search {
      *
      * @param algo the algorithm used.
      */
-    public void treeSearch(String algo) {
+    public void treeSearch(String algo, boolean print) {
         setAlgo(algo); // Set algorithm selected.
+        setPrint(print);
+
         Node initialNode;
 
         // Create initial node.
@@ -371,22 +394,28 @@ public abstract class Search {
     public void printOutput(Node node) {
         Stack<Coord> pathStates = node.getPath(start);
 
-        // Print path, path cost, and number of nodes explored.
-        while (!pathStates.isEmpty()) {
-            System.out.print(pathStates.pop());
+        pathCost = node.getPathCost(start);
+        nodesExplored = getExplored().size();
+
+        // if print flag is true, print the output.
+        if (print) {
+            // Print path, path cost, and number of nodes explored.
+            while (!pathStates.isEmpty()) {
+                System.out.print(pathStates.pop());
+            }
+            System.out.println("\n" + pathCost); // Print path cost.
+            System.out.println(nodesExplored); // Print nodes explored.
         }
-        System.out.println("\n" + node.getPathCost(start)); // Print path cost.
-        System.out.println(getExplored().size()); // Print nodes explored.
-//        System.exit(0); // Exit system.
     }
 
     /**
      * If the search could not find a solution, print fail message, the explored size, and then exit the system.
      */
     public void failure() {
-        System.out.println("fail");
-        System.out.println(getExplored().size());
-//        System.exit(0); // Exit system.
+        if (isPrint()) {
+            System.out.println("fail");
+            System.out.println(getExplored().size());
+        }
     }
 
 }

@@ -15,9 +15,9 @@ public class InformedSearch extends Search {
     /**
      * Create an uninformed search instance - BestF and AStar algorithms.
      *
-     * @param map   the map passed in.
-     * @param start the starting coordinates.
-     * @param goal  the goal coordinates.
+     * @param map       the map passed in.
+     * @param start     the starting coordinates.
+     * @param goal      the goal coordinates.
      * @param heuristic the chosen heuristic.
      */
     public InformedSearch(Map map, Coord start, Coord goal, char heuristic) {
@@ -34,8 +34,10 @@ public class InformedSearch extends Search {
      */
     @Override
     public void printFrontier(Collection<Node> frontier) {
-        DecimalFormat df = new DecimalFormat("0.0"); // Get cost in 2 decimal places.
-        System.out.println("[" + frontier.stream().map(n -> n.getState().toString() + ":" + df.format(n.getF_Cost())).collect(Collectors.joining(",")) + "]");
+        if (isPrint()) {
+            DecimalFormat df = new DecimalFormat("0.0"); // Get cost in 2 decimal places.
+            System.out.println("[" + frontier.stream().map(n -> n.getState().toString() + ":" + df.format(n.getF_Cost())).collect(Collectors.joining(",")) + "]");
+        }
     }
 
     /**

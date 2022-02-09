@@ -50,7 +50,10 @@ public class BidirectionalSearch extends UninformedSearch {
         while (!getFrontier().isEmpty() && !frontier2.isEmpty() && !intersection) {
             printFrontier(getFrontier()); // print frontier.
             printFrontier(frontier2); // print frontier2.
-            System.out.println();
+            if (isPrint()) {
+                System.out.println();
+            }
+
 
             Node currentNode = removeFromFrontier(getFrontier());
             Node currentNode2  = removeFromFrontier(frontier2);
@@ -144,14 +147,20 @@ public class BidirectionalSearch extends UninformedSearch {
         reverse(pathStates2);
         pathStates2.pop(); // remove first element (as it is the intersection).
 
-        while (!pathStates.isEmpty()) {
-            System.out.print(pathStates.pop());
+        nodesExplored = getExplored().size() + explored2.size();
+        pathCost =  node1.getPathCost(getStart()) + node2.getPathCost(getGoal());
+
+        // if print flag is true, then print the output.
+        if (isPrint()) {
+            while (!pathStates.isEmpty()) {
+                System.out.print(pathStates.pop());
+            }
+            while (!pathStates2.isEmpty()) {
+                System.out.print(pathStates2.pop());
+            }
+            System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
+            System.out.println(getExplored().size() + " , " + explored2.size());
         }
-        while (!pathStates2.isEmpty()) {
-            System.out.print(pathStates2.pop());
-        }
-        System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
-        System.out.println(getExplored().size() + " , " + explored2.size());
     }
 
 

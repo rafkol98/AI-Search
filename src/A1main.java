@@ -31,9 +31,8 @@ public class A1main {
                 if (args.length == 4) {
                     try {
                         int numTides = Integer.parseInt(args[3]);
-                        map = generateHighTides(map, conf.getS(), conf.getG(), numTides); // change map.
                         TestingTides testingTides = new TestingTides(map, conf.getS(), conf.getG(), 'M');
-                        testingTides.runAlgorithms();
+                        testingTides.runAlgorithms(numTides);
                         System.exit(0);
 
                     } catch (NumberFormatException nfe) {
@@ -70,19 +69,19 @@ public class A1main {
 
         switch (algo) {
             case "BFS": //run BFS
-                uninformed.treeSearch("BFS");
+                uninformed.treeSearch("BFS", true);
                 break;
             case "DFS": //run DFS
-                uninformed.treeSearch("DFS");
+                uninformed.treeSearch("DFS", true);
                 break;
             case "BestF": //run BestF
-                informed.treeSearch("BestF");
+                informed.treeSearch("BestF", true);
                 break;
             case "AStar": //run AStar
-                informed.treeSearch("AStar");
+                informed.treeSearch("AStar", true);
                 break;
             case "Bidirectional": //run Bidirectional
-                bidirectional.treeSearch("Bidirectional");
+                bidirectional.treeSearch("Bidirectional", true);
                 break;
         }
         System.exit(0);
@@ -144,7 +143,7 @@ public class A1main {
 
     }
 
-    private static boolean isCoord(Coord coord, int r, int c) {
+    public static boolean isCoord(Coord coord, int r, int c) {
         //check if coordinates are the same as current (r,c)
         if (coord.getR() == r && coord.getC() == c) {
             return true;
@@ -161,38 +160,6 @@ public class A1main {
             return "/"; //left return right
         }
 
-    }
-
-    /**
-     * Randomly generates high tides on different coordinates of the map.
-     *
-     * @param m    map of the configuration.
-     * @param init initial coordinates.
-     * @param goal goal coordinates.
-     * @return the updated map.
-     */
-    private static Map generateHighTides(Map m, Coord init, Coord goal, int numberOfTides) {
-        // Get rows and columns of the map.
-        int rows = m.getMap().length;
-        int columns = m.getMap()[0].length;
-
-        int tidesAssigned = 0;
-        if (numberOfTides < ((rows * columns)-m.countIslands())) {
-           while(tidesAssigned < numberOfTides) {
-                int randomRow = new Random().nextInt(rows-1);
-                int randomColumn = new Random().nextInt(columns-1);
-
-                if (m.getMap()[randomRow][randomColumn] != 1 && m.getMap()[randomRow][randomColumn] != 2 && !isCoord(init, randomRow, randomColumn) && !isCoord(goal,randomRow, randomColumn)) {
-                    m.setTide(randomRow, randomColumn);
-                    tidesAssigned++;
-                }
-            }
-        } else {
-            System.out.println("Please select smaller number of tides, between 0 and "+ ((rows * columns)-m.countIslands()-2));
-            System.exit(0);
-        }
-
-        return m;
     }
 
 }
