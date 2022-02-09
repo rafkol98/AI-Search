@@ -163,7 +163,8 @@ public class Node {
     }
 
     /**
-     * Calculate heuristic cost.
+     * Calculate heuristic cost. Available heuristics include Manhattan cartesian, Manhattan triangle,
+     * Euclidean distance, and Chebyshev distance.
      *
      * @param heuristic the heuristic being used.
      * @return manhattan distance.
@@ -187,7 +188,8 @@ public class Node {
     }
 
     /**
-     * Compute the manhattan distance using the triangle grid method.
+     * Compute the manhattan distance using the triangle grid method. Following the calculations specified in the
+     * lectures.
      *
      * @return the manhattan distance using the triangle grid method.
      */

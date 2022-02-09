@@ -9,8 +9,6 @@
  * java A1main <Algo> <ConfID>
  *
  */
-
-
 public class A1main {
 
     public static void main(String[] args) {
@@ -51,9 +49,7 @@ public class A1main {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
-
-            System.out.println("There was a problem. Please run the program like this java A1main BFS JCONF03 M");
+            System.out.println("There was a problem. Please run the program like this: java A1main BFS JCONF03 M. \n Ensuring that you specify a valid map.");
         }
 
 

@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
  */
 public abstract class Search {
 
+    // Variables used for the testing tides class.
+    public int nodesExplored = 0;
+    public float pathCost = 0;
+    boolean print;
     // Initialise variables.
     private int[][] map;
     private Coord start;
@@ -16,11 +20,6 @@ public abstract class Search {
     private String algo;
     private char heuristic;
     private boolean foundSolution = false;
-
-    // Variables used for the testing tides class.
-    public int nodesExplored = 0;
-    public float pathCost = 0;
-    boolean print;
 
 
     public Search(Map map, Coord start, Coord goal) {
@@ -46,6 +45,7 @@ public abstract class Search {
 
     /**
      * Set it to true once a solution is found.
+     *
      * @param foundSolution true if a solution is found, false otherwise.
      */
     public void setFoundSolution(boolean foundSolution) {
@@ -53,20 +53,22 @@ public abstract class Search {
     }
 
     /**
-     * Set whether the output should be printed. Its only not printed when called from the
-     * TestingTides class which was created just for evaluation.
-     * @param print
-     */
-    public void setPrint(boolean print) {
-        this.print = print;
-    }
-
-    /**
      * Get whether the print flag is true or false.
-     * @return
+     *
+     * @return the boolean value of the print flag.
      */
     public boolean isPrint() {
         return print;
+    }
+
+    /**
+     * Set whether the output should be printed. Its only NOT printed when called from the
+     * TestingTides class which was created just for evaluation.
+     *
+     * @param print the boolean value to be assigned to print.
+     */
+    public void setPrint(boolean print) {
+        this.print = print;
     }
 
     /**
@@ -150,7 +152,7 @@ public abstract class Search {
      * Get a node from an explored ArrayList that has the same state as the one passed in.
      *
      * @param explored the explored to be iterated.
-     * @param state the state that we are looking.
+     * @param state    the state that we are looking.
      * @return the node that is included in the explored ArrayList.
      */
     public Node getNodeInExplored(ArrayList<Node> explored, Coord state) {

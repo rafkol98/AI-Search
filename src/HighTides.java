@@ -7,11 +7,19 @@ import java.util.Random;
  */
 public class HighTides {
 
+    // Initialise variables.
     Map map;
     Coord start;
     Coord goal;
     char heuristic;
 
+    /**
+     * Initialise a high tides instance.
+     * @param map the configuration's map.
+     * @param start the starting coordinates.
+     * @param goal the goal coordinates.
+     * @param heuristic the chosen heuristic.
+     */
     public HighTides(Map map, Coord start, Coord goal, char heuristic) {
         this.map = map;
         this.start = start;
@@ -37,9 +45,14 @@ public class HighTides {
             runSearches(tempMap);
             tides = tides + 1;
         }
-
     }
 
+    /**
+     * Run all the possible searches on the given problem, printing how many nodes each algorithm explored, and the path
+     * cost found.
+     *
+     * @param map the configuration's map.
+     */
     private void runSearches(Map map) {
         Search bfs = new UninformedSearch(map, start, goal);
         Search dfs = new UninformedSearch(map, start, goal);
@@ -63,6 +76,8 @@ public class HighTides {
     /**
      * Randomly generates high tides on different coordinates of the map.
      *
+     * @param map the specified map to generate tides to.
+     * @param numberOfTides the number of tides to add.
      * @return the updated map.
      */
     private Map generateHighTides(Map map, int numberOfTides) {

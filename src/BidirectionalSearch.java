@@ -33,6 +33,37 @@ public class BidirectionalSearch extends UninformedSearch {
         this.frontier2 = new LinkedList<>();
     }
 
+    /**
+     * Recursive function that adds states at the bottom of a stack.
+     *
+     * @param stack the stack to insert states at the bottom to.
+     * @param state the state to be added.
+     */
+    private static void insertAtBottom(Stack<Coord> stack, Coord state) {
+        if (stack.empty()) {
+            stack.push(state);
+            return;
+        }
+        Coord top = stack.pop();
+        insertAtBottom(stack, state); // recursive call.
+        stack.push(top);
+    }
+
+    /**
+     * A recursive function that reverses a given stack.
+     * Used to reverse the path from the second sub-tree.
+     *
+     * @param stack the stack to be reversed.
+     */
+    private static void reverse(Stack<Coord> stack) {
+        // if stack is empty, then the stack was reversed.
+        if (stack.empty()) {
+            return;
+        }
+        Coord state = stack.pop();
+        reverse(stack); // recursive call.
+        insertAtBottom(stack, state);
+    }
 
     /**
      * Loop and explore the frontier. If goal is found, its path, cost, and explored nodes are printed.
@@ -56,7 +87,7 @@ public class BidirectionalSearch extends UninformedSearch {
 
 
             Node currentNode = removeFromFrontier(getFrontier());
-            Node currentNode2  = removeFromFrontier(frontier2);
+            Node currentNode2 = removeFromFrontier(frontier2);
 
             // Add current node to explored.
             addExplored(currentNode, getExplored());
@@ -69,9 +100,9 @@ public class BidirectionalSearch extends UninformedSearch {
                 break;
             } else {
                 // insert to the frontier all nodes returned from the expand function.
-                insertAll(expand(currentNode, getFrontier(),1), getFrontier());
+                insertAll(expand(currentNode, getFrontier(), 1), getFrontier());
                 // insert to the second frontier the nodes returned from the second search.
-                insertAll(expand(currentNode2, frontier2,2), frontier2);
+                insertAll(expand(currentNode2, frontier2, 2), frontier2);
             }
         }
     }
@@ -102,7 +133,7 @@ public class BidirectionalSearch extends UninformedSearch {
      * Inserts all the successors to the frontier.
      *
      * @param successors the successors ArrayList containing all the suitable successors.
-     * @param frontier the frontier to which to add all the successors (from the 2 frontiers).
+     * @param frontier   the frontier to which to add all the successors (from the 2 frontiers).
      */
     public void insertAll(ArrayList<Node> successors, LinkedList<Node> frontier) {
         for (Node node : successors) {
@@ -119,7 +150,6 @@ public class BidirectionalSearch extends UninformedSearch {
     public Node removeFromFrontier(LinkedList<Node> frontier) {
         return frontier.poll();
     }
-
 
     /**
      * Check if the state was explored by both sub-searches.
@@ -148,7 +178,7 @@ public class BidirectionalSearch extends UninformedSearch {
         pathStates2.pop(); // remove first element (as it is the intersection).
 
         nodesExplored = getExplored().size() + explored2.size();
-        pathCost =  node1.getPathCost(getStart()) + node2.getPathCost(getGoal());
+        pathCost = node1.getPathCost(getStart()) + node2.getPathCost(getGoal());
 
         // if print flag is true, then print the output.
         if (isPrint()) {
@@ -161,42 +191,6 @@ public class BidirectionalSearch extends UninformedSearch {
             System.out.println("\n" + node1.getPathCost(getStart()) + " , " + node2.getPathCost(getGoal()));
             System.out.println(getExplored().size() + " , " + explored2.size());
         }
-    }
-
-
-    /**
-     * Recursive function that adds states at the bottom of a stack.
-     *
-     * @param stack the stack to insert states at the bottom to.
-     * @param state the state to be added.
-     */
-    private static void insertAtBottom(Stack<Coord> stack, Coord state)
-    {
-        if (stack.empty())
-        {
-            stack.push(state);
-            return;
-        }
-        Coord top = stack.pop();
-        insertAtBottom(stack, state); // recursive call.
-        stack.push(top);
-    }
-
-    /**
-     * A recursive function that reverses a given stack.
-     * Used to reverse the path from the second sub-tree.
-     *
-     * @param stack the stack to be reversed.
-     */
-    private static void reverse(Stack<Coord> stack)
-    {
-        // if stack is empty, then the stack was reversed.
-        if (stack.empty()) {
-            return;
-        }
-        Coord state = stack.pop();
-        reverse(stack); // recursive call.
-        insertAtBottom(stack, state);
     }
 
 }
