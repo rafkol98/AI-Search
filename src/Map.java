@@ -100,6 +100,11 @@ public enum Map {
         map[row][col] = 2;
     }
 
+    /**
+     * Count number of islands in the map. Number of 1's.
+     *
+     * @return the number of islands.
+     */
     public int countIslands() {
         int rows = map.length;
         int columns = map[0].length;
@@ -112,7 +117,6 @@ public enum Map {
                 }
             }
         }
-
         return count;
     }
 

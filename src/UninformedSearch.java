@@ -95,12 +95,14 @@ public class UninformedSearch extends Search {
 
 
     /**
-     * Inserts all the successors to the frontier.
+     * Inserts all the successors to the frontier, depending on the algorithm.
      *
      * @param successors the successors ArrayList containing all the suitable successors.
      */
     @Override
     public void insertAll(ArrayList<Node> successors) {
+        // If DFS, reverse successors list passed in and then use addFirst to add nodes.
+        // The successors are reversed so that they are added first in the correct order.
         if (getAlgo().equals("DFS")) {
             ArrayList<Node> reverseList = new ArrayList<>();
             for (int i = successors.size() - 1; i >= 0; i--) {
@@ -111,7 +113,9 @@ public class UninformedSearch extends Search {
                 frontier.addFirst(node);
             }
 
-        } else if (getAlgo().equals("BFS")) {
+        }
+        // If BFS is used, add each successor node last.
+        else if (getAlgo().equals("BFS")) {
             for (Node node : successors) {
                 frontier.addLast(node);  // Add current node last - first in, first out.
 
