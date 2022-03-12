@@ -1,7 +1,7 @@
 # AI-Search
 This submission designed, explored, and evaluated different uninformed and informed search algorithms to create a route planner for autonomous ferries.
 
-Developed for the AI Practice module - University of St Andrews.
+AI Practice module Practical 1 - University of St Andrews.
 
 **Compiling & Running Instruction**
 1. Navigate to the src directory included in the AI-Search folder:
